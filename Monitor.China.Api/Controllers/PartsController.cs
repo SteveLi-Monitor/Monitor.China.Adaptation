@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Monitor.API.Client.Repositories;
-using Monitor.China.Api.Bootstrap;
+using Monitor.API.Infrastructure;
+using Monitor.API.Inventory.Commands.Parts;
 using Monitor.China.Api.Dtos;
+using Monitor.China.Api.MonitorApis.Commands;
+using Monitor.China.Api.MonitorApis.Queries;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -11,21 +13,41 @@ namespace Monitor.China.Api.Controllers
     [ApiController]
     public class PartsController : ControllerBase
     {
-        private readonly ApiTransaction apiTransaction;
-        private readonly IMonitorApiRepositoryFactory repositoryFactory;
+        private readonly GenericQuery<PartDto> query;
+        private readonly GenericCommand command;
 
-        public PartsController(ApiTransaction apiTransaction, IMonitorApiRepositoryFactory repositoryFactory)
+        public PartsController(QueryFactory queryFactory, CommandFactory commandFactory)
         {
-            this.apiTransaction = apiTransaction;
-            this.repositoryFactory = repositoryFactory;
+            query = queryFactory.Create<PartDto>();
+            command = commandFactory.Create();
         }
 
         [HttpGet]
-        public async Task<IEnumerable<PartDto>> Get()
+        public Task<IEnumerable<PartDto>> Get()
         {
-            var transaction = await apiTransaction.CreateAsync();
-            var repo = repositoryFactory.CreateEntityRepository<PartDto>(transaction);
-            return await repo.GetAsync();
+            return query.GetAsync();
+        }
+
+        [HttpPost("Create")]
+        public Task<EntityCommandResponse> Create(CreateDto createDto)
+        {
+            return command.SendAsync(
+                new CreatePart
+                {
+                    PartNumber = createDto.PartNumber,
+                    Description = createDto.Description,
+                    StandardUnitId = createDto.StandardUnitId
+                });
+        }
+
+
+        public class CreateDto
+        {
+            public string PartNumber { get; set; }
+
+            public string Description { get; set; }
+
+            public long StandardUnitId { get; set; }
         }
     }
 }
