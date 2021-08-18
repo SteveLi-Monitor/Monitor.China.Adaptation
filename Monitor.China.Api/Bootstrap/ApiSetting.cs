@@ -1,4 +1,6 @@
-﻿namespace Monitor.China.Api.Bootstrap
+﻿using Monitor.China.Api.Extensions;
+
+namespace Monitor.China.Api.Bootstrap
 {
     public class ApiSetting
     {
@@ -13,5 +15,14 @@
         public string Password { get; set; }
 
         public string Certificate { get; set; }
+
+        public void Guard()
+        {
+            ServerAddress.Guard(nameof(ServerAddress));
+            LanguageCode.Guard(nameof(LanguageCode));
+            CompanyNumber.Guard(nameof(CompanyNumber));
+            UserName.Guard(nameof(UserName));
+            Password.Guard(nameof(Password));
+        }
     }
 }

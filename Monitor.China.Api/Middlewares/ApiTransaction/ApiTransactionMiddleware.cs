@@ -2,7 +2,9 @@
 using Microsoft.Extensions.Primitives;
 using Monitor.China.Api.Bootstrap;
 using Monitor.China.Api.Exceptions;
+using Monitor.China.Api.Extensions;
 using Newtonsoft.Json;
+using System;
 using System.Threading.Tasks;
 
 namespace Monitor.China.Api.Middlewares.ApiTransaction
@@ -25,9 +27,25 @@ namespace Monitor.China.Api.Middlewares.ApiTransaction
                 throw new RequestHeaderNotFoundException(Constants.ApiSettingHeader);
             }
 
-            apiTransaction.ApiSetting = JsonConvert.DeserializeObject<ApiSetting>(header);
+            apiTransaction.ApiSetting = DeserializeApiSetting(header);
 
             await next(context);
+        }
+
+        private ApiSetting DeserializeApiSetting(string value)
+        {
+            try
+            {
+                var apiSetting = JsonConvert.DeserializeObject<ApiSetting>(value);
+                apiSetting.Guard(nameof(apiSetting));
+                apiSetting.Guard();
+                return apiSetting;
+            }
+            catch (Exception e)
+            {
+                throw new InvalidOperationException(
+                    $"ApiSetting is invalid: {value}.", e);
+            }
         }
     }
 }
