@@ -11,7 +11,8 @@ namespace Monitor.China.Api.Bootstrap
             MonitorApiProvider.Bootstrap(
                 new DependencyRegistrator(services));
 
-            services.AddSingleton<IJsonConverter, JsonConverter>();
+            services.AddSingleton<IJsonConverter, JsonConverter>()
+                    .AddScoped<ApiTransaction>();
 
             return services;
         }

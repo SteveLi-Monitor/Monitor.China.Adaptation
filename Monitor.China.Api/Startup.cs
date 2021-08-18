@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Monitor.China.Api.Bootstrap;
+using Monitor.China.Api.Middlewares.ApiTransaction;
 
 namespace Monitor.China.Api
 {
@@ -29,6 +30,8 @@ namespace Monitor.China.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseApiTransaction();
 
             app.UseMvc();
         }
