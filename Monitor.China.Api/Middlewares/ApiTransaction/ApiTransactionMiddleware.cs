@@ -20,14 +20,17 @@ namespace Monitor.China.Api.Middlewares.ApiTransaction
 
         public async Task InvokeAsync(HttpContext context, Bootstrap.ApiTransaction apiTransaction)
         {
-            var header = context.Request.Headers[Constants.ApiSettingHeader];
-
-            if (StringValues.IsNullOrEmpty(header))
+            if (context.Request.Path.StartsWithSegments(PathString.FromUriComponent("/api")))
             {
-                throw new RequestHeaderNotFoundException(Constants.ApiSettingHeader);
-            }
+                var header = context.Request.Headers[Constants.ApiSettingHeader];
 
-            apiTransaction.ApiSetting = DeserializeApiSetting(header);
+                if (StringValues.IsNullOrEmpty(header))
+                {
+                    throw new RequestHeaderNotFoundException(Constants.ApiSettingHeader);
+                }
+
+                apiTransaction.ApiSetting = DeserializeApiSetting(header);
+            }
 
             await next(context);
         }
