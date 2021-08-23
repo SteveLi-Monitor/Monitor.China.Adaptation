@@ -42,6 +42,30 @@ namespace Application.Tests.Common.Jwt
         }
 
         [Fact]
+        public void ShouldBuildJwtTokenFromOption()
+        {
+            var now = DateTime.UtcNow;
+
+            var builder = new JwtTokenBuilder(
+                new JwtTokenOption
+                {
+                    Issuer = issuer,
+                    Audience = audience,
+                    ExpiresInMinutes = 1,
+                    Key = key
+                });
+
+            var tokenString = builder.WriteToken();
+
+            Assert.False(string.IsNullOrEmpty(tokenString));
+            Assert.Equal(issuer, builder.Token.Issuer);
+            Assert.Equal(audience, builder.Token.Audiences.First());
+            Assert.Equal(now, builder.Token.ValidFrom, TimeSpan.FromSeconds(1));
+            Assert.Equal(now.AddMinutes(1), builder.Token.ValidTo, TimeSpan.FromSeconds(1));
+            Assert.Equal(SecurityAlgorithms.HmacSha256, builder.Token.SignatureAlgorithm);
+        }
+
+        [Fact]
         public void ShouldThrowExceptionWhenExpiresIsLessThanOrEqualToNotBefore()
         {
             var now = DateTime.UtcNow;

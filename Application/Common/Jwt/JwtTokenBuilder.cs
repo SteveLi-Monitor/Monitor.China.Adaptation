@@ -15,13 +15,27 @@ namespace Application.Common.Jwt
             Claims = new List<Claim>();
         }
 
+        public JwtTokenBuilder(JwtTokenOption option) : this()
+        {
+            option.Guard(nameof(option));
+            option.Guard();
+
+            var now = DateTime.UtcNow;
+
+            this.SetIssuer(option.Issuer)
+                .SetAudience(option.Audience)
+                .SetNotBefore(now)
+                .SetExpires(now.AddMinutes(option.ExpiresInMinutes))
+                .SetSigningCredentialKey(option.Key);
+        }
+
         public string Issuer { get; private set; }
 
         public string Audience { get; private set; }
 
         public IList<Claim> Claims { get; private set; }
 
-        public DateTime NotBefore { get; private set; } = DateTime.UtcNow;
+        public DateTime NotBefore { get; private set; }
 
         public DateTime Expires { get; private set; }
 
