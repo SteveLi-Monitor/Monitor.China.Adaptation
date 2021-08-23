@@ -2,6 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
@@ -25,6 +26,8 @@ namespace Application.Common.Jwt
         public DateTime Expires { get; private set; }
 
         public SigningCredentials SigningCredentials { get; private set; }
+
+        public JwtSecurityToken Token { get; private set; }
 
         public JwtTokenBuilder SetIssuer(string issuer)
         {
@@ -66,6 +69,35 @@ namespace Application.Common.Jwt
                 new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)),
                 SecurityAlgorithms.HmacSha256);
             return this;
+        }
+
+        public string WriteToken()
+        {
+            Guard();
+
+            Token = new JwtSecurityToken(
+                issuer: Issuer,
+                audience: Audience,
+                claims: Claims,
+                notBefore: NotBefore,
+                expires: Expires,
+                signingCredentials: SigningCredentials);
+
+            return new JwtSecurityTokenHandler().WriteToken(Token);
+        }
+
+        private void Guard()
+        {
+            Issuer.Guard(nameof(Issuer));
+            Audience.Guard(nameof(Audience));
+
+            if (Expires <= NotBefore)
+            {
+                throw new InvalidOperationException
+                    ($"{nameof(Expires)} '{Expires}' should be later than {nameof(NotBefore)} '{NotBefore}'.");
+            }
+
+            SigningCredentials.Guard(nameof(SigningCredentials));
         }
     }
 }
