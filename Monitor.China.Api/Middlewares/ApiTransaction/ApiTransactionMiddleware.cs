@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Domain;
+using Domain.Common;
+using Domain.Extensions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
-using Monitor.China.Api.Bootstrap;
 using Monitor.China.Api.Exceptions;
-using Monitor.China.Api.Extensions;
 using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;

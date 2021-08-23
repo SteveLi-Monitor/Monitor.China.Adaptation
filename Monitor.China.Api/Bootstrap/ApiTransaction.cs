@@ -1,4 +1,5 @@
-﻿using Monitor.API.Client;
+﻿using Domain.Common;
+using Monitor.API.Client;
 using System;
 using System.IO;
 using System.Threading.Tasks;

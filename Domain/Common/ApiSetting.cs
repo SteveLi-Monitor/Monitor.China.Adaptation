@@ -1,6 +1,6 @@
-﻿using Monitor.China.Api.Extensions;
+﻿using Domain.Extensions;
 
-namespace Monitor.China.Api.Bootstrap
+namespace Domain.Common
 {
     public class ApiSetting
     {

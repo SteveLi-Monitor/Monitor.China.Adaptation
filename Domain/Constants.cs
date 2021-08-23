@@ -1,4 +1,4 @@
-﻿namespace Monitor.China.Api
+﻿namespace Domain
 {
     public static class Constants
     {
