@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Monitor.China.Api.Extensions
+namespace Domain.Extensions
 {
     public static class ObjectExtensions
     {
