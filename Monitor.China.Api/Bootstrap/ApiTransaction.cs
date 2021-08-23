@@ -36,10 +36,10 @@ namespace Monitor.China.Api.Bootstrap
                 builder =>
                 {
                     builder.SetServerAddress(MonitorApiSetting.MonitorServerSetting.ServerAddress)
-                           .SetLanguageCode(MonitorApiSetting.MonitorApiUser.Username)
-                           .SetCompanyNumber(MonitorApiSetting.MonitorApiUser.Password)
-                           .SetUsername(MonitorApiSetting.MonitorApiUser.CompanyNumber)
-                           .SetPassword(MonitorApiSetting.MonitorApiUser.LanguageCode);
+                           .SetLanguageCode(MonitorApiSetting.MonitorApiUser.LanguageCode)
+                           .SetCompanyNumber(MonitorApiSetting.MonitorApiUser.CompanyNumber)
+                           .SetUsername(MonitorApiSetting.MonitorApiUser.Username)
+                           .SetPassword(MonitorApiSetting.MonitorApiUser.Password);
 
                     if (setCertificate)
                     {
