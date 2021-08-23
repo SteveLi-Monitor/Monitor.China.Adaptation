@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.31515.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monitor.China.Api", "Monitor.China.Api\Monitor.China.Api.csproj", "{DCFF0365-68B2-4CF0-883A-E492760A040D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{9FCE2061-18A8-409C-BB0D-088EDF100769}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{9FCE2061-18A8-409C-BB0D-088EDF100769}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "Api\Api.csproj", "{72B2F66C-2A5E-4792-9A7B-231BC9B343F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{9FCE2061-18A8-409C-BB0D-088EDF100769}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9FCE2061-18A8-409C-BB0D-088EDF100769}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9FCE2061-18A8-409C-BB0D-088EDF100769}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72B2F66C-2A5E-4792-9A7B-231BC9B343F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72B2F66C-2A5E-4792-9A7B-231BC9B343F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72B2F66C-2A5E-4792-9A7B-231BC9B343F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72B2F66C-2A5E-4792-9A7B-231BC9B343F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
