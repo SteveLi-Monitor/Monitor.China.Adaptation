@@ -1,6 +1,6 @@
 ﻿using Domain.Common;
+using Domain.Extensions;
 using Monitor.API.Client;
-using System;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -15,7 +15,7 @@ namespace Monitor.China.Api.Bootstrap
             this.httpTransactionService = httpTransactionService;
         }
 
-        public ApiSetting ApiSetting { get; set; }
+        public MonitorApiSetting MonitorApiSetting { get; set; }
 
         public Task<IHttpTransaction> CreateAsync()
         {
@@ -29,28 +29,26 @@ namespace Monitor.China.Api.Bootstrap
 
         private Task<IHttpTransaction> CreateAsync(bool setCertificate)
         {
-            if (ApiSetting == null)
-            {
-                throw new ArgumentNullException(nameof(ApiSetting));
-            }
+            MonitorApiSetting.Guard(nameof(MonitorApiSetting));
+            MonitorApiSetting.Guard();
 
             return httpTransactionService.BeginAsync(
                 builder =>
                 {
-                    builder.SetServerAddress(ApiSetting.ServerAddress)
-                           .SetLanguageCode(ApiSetting.LanguageCode)
-                           .SetCompanyNumber(ApiSetting.CompanyNumber)
-                           .SetUsername(ApiSetting.UserName)
-                           .SetPassword(ApiSetting.Password);
+                    builder.SetServerAddress(MonitorApiSetting.MonitorServerSetting.ServerAddress)
+                           .SetLanguageCode(MonitorApiSetting.MonitorApiUser.Username)
+                           .SetCompanyNumber(MonitorApiSetting.MonitorApiUser.Password)
+                           .SetUsername(MonitorApiSetting.MonitorApiUser.CompanyNumber)
+                           .SetPassword(MonitorApiSetting.MonitorApiUser.LanguageCode);
 
                     if (setCertificate)
                     {
-                        if (!File.Exists(ApiSetting.Certificate))
+                        if (!File.Exists(MonitorApiSetting.MonitorServerSetting.Certificate))
                         {
-                            throw new FileNotFoundException($"File not found: {ApiSetting.Certificate}");
+                            throw new FileNotFoundException($"File not found: {MonitorApiSetting.MonitorServerSetting.Certificate}");
                         }
 
-                        builder.SetCertificateFile(ApiSetting.Certificate);
+                        builder.SetCertificateFile(MonitorApiSetting.MonitorServerSetting.Certificate);
                     }
 
                     return builder;
