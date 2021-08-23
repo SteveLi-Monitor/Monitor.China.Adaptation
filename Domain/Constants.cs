@@ -2,6 +2,6 @@
 {
     public static class Constants
     {
-        public const string ApiSettingHeader = "ApiSetting";
+        public const string MonitorApiSettingHeader = "MonitorApiSetting";
     }
 }
