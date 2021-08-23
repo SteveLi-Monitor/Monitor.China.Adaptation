@@ -1,5 +1,8 @@
+using Application;
+using Application.Common.Jwt;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -17,6 +20,9 @@ namespace Api
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddApplication(
+                Configuration.GetSection(nameof(JwtTokenOption)).Get<JwtTokenOption>());
+
             services.AddControllers();
         }
 
@@ -29,11 +35,17 @@ namespace Api
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            app.Run(async context =>
+            {
+                await context.Response.WriteAsync("Api is running");
             });
         }
     }
