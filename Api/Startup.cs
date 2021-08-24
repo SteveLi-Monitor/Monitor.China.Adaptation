@@ -1,5 +1,4 @@
 using Application;
-using Application.Common.Jwt;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -20,8 +19,7 @@ namespace Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddApplication(
-                Configuration.GetSection(nameof(JwtTokenOption)).Get<JwtTokenOption>());
+            services.AddApplication(Configuration);
 
             services.AddControllers();
         }
