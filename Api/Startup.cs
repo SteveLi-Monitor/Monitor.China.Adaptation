@@ -1,3 +1,4 @@
+using Api.Middlewares.ApplicationUser;
 using Application;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -35,6 +36,8 @@ namespace Api
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseApplicationUser();
 
             app.UseEndpoints(endpoints =>
             {
