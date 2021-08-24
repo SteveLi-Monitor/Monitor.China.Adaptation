@@ -1,4 +1,5 @@
-﻿using Application.Common.Jwt;
+﻿using Application.Common;
+using Application.Common.Jwt;
 using Application.Common.MonitorApi;
 using Domain.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -39,6 +40,7 @@ namespace Application
                     };
                 });
 
+            services.AddScoped<ApplicationUser>();
             services.AddHttpClient<MonitorApiService>();
 
             return services;
