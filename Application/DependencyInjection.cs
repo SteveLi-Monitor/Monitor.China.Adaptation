@@ -1,6 +1,8 @@
 ﻿using Application.Common.Jwt;
+using Application.Common.MonitorApi;
 using Domain.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -10,8 +12,11 @@ namespace Application
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddApplication(this IServiceCollection services, JwtTokenOption jwtTokenOption)
+        public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
         {
+            var jwtTokenOption = configuration
+                .GetSection(nameof(JwtTokenOption)).Get<JwtTokenOption>();
+
             jwtTokenOption.Guard(nameof(jwtTokenOption));
             jwtTokenOption.Guard();
 
@@ -33,6 +38,8 @@ namespace Application
                         ClockSkew = TimeSpan.FromMinutes(1),
                     };
                 });
+
+            services.AddHttpClient<MonitorApiService>();
 
             return services;
         }
