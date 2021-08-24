@@ -31,6 +31,10 @@ namespace Monitor.China.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseExceptionHandler("/error");
+            }
 
             app.UseApiTransaction();
             app.UseMvc();
