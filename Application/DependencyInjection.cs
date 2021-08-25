@@ -49,6 +49,7 @@ namespace Application
             services.AddScoped<ApplicationUser>()
                 .AddMediatR(Assembly.GetExecutingAssembly())
                 .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly())
+                .AddAutoMapper(Assembly.GetExecutingAssembly())
                 .AddTransient(typeof(IPipelineBehavior<,>), typeof(ExceptionLogBehaviour<,>))
                 .AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
 
