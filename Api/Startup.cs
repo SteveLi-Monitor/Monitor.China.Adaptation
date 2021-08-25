@@ -1,5 +1,6 @@
 using Api.Middlewares.ApplicationUser;
 using Application;
+using Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -19,9 +20,10 @@ namespace Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddApplication(Configuration);
-
-            services.AddControllers();
+            services
+                .AddApplication(Configuration)
+                .AddInfrastructure(Configuration)
+                .AddControllers();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
