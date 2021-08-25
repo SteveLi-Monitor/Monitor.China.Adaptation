@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -38,11 +37,6 @@ namespace Monitor.China.Api
 
             app.UseApiTransaction();
             app.UseMvc();
-
-            app.Run(async context =>
-            {
-                await context.Response.WriteAsync("Monitor.China.Api is running");
-            });
         }
     }
 }
