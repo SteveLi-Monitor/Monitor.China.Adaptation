@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using System.Net;
 
 namespace Monitor.China.Api.Controllers
@@ -20,6 +21,8 @@ namespace Monitor.China.Api.Controllers
                 Title = $"{exception.GetType().Name}: {exception.Message}",
                 Detail = exception.StackTrace
             };
+
+            Log.Error(exception, $"Unhandled exception for request: {feature?.Path}.");
 
             return StatusCode(problemDetails.Status.Value, problemDetails);
         }

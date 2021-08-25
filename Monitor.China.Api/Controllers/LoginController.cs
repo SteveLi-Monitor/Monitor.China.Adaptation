@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Monitor.China.Api.Bootstrap;
-using System;
 using System.Threading.Tasks;
 
 namespace Monitor.China.Api.Controllers
@@ -19,29 +18,13 @@ namespace Monitor.China.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Login()
         {
-            try
-            {
-                await apiTransaction.CreateAsync();
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                return BadRequest($"{e.GetType().Name}: {e.Message}");
-            }
+            return Ok(await apiTransaction.CreateAsync());
         }
 
         [HttpPost("WithCertificate")]
         public async Task<IActionResult> LoginWithCertificate()
         {
-            try
-            {
-                await apiTransaction.CreateWithCertificateAsync();
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                return BadRequest($"{e.GetType().Name}: {e.Message}");
-            }
+            return Ok(await apiTransaction.CreateWithCertificateAsync());
         }
 
     }
