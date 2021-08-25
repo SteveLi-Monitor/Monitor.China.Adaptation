@@ -15,9 +15,7 @@ namespace Monitor.China.Api
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
                 .Enrich.FromLogContext()
                 .WriteTo.Console()
-                .WriteTo.File(
-                    AppDomain.CurrentDomain.BaseDirectory + "Logs/log.txt",
-                    rollingInterval: RollingInterval.Day)
+                .WriteTo.File(AppDomain.CurrentDomain.BaseDirectory + "Logs/start-up.txt")
                 .CreateLogger();
 
             var assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
