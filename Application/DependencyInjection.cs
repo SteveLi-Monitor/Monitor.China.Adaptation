@@ -1,7 +1,9 @@
 ﻿using Application.Common;
+using Application.Common.Behaviours;
 using Application.Common.Jwt;
 using Application.Common.MonitorApi;
 using Domain.Extensions;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
@@ -45,7 +47,9 @@ namespace Application
             services.AddHttpClient<MonitorApiService>();
 
             services.AddScoped<ApplicationUser>()
-                .AddMediatR(Assembly.GetExecutingAssembly());
+                .AddMediatR(Assembly.GetExecutingAssembly())
+                .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly())
+                .AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
 
             return services;
         }

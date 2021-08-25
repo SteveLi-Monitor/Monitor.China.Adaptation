@@ -1,7 +1,6 @@
 ﻿using Application.Common;
 using Application.Common.Jwt;
 using Application.Common.MonitorApi;
-using Domain.Extensions;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -20,13 +19,6 @@ namespace Application.Users.Commands.SignIn
         public string LanguageCode { get; set; } = "ZH";
 
         public string CompanyNumber { get; set; }
-
-        public void Guard()
-        {
-            Username.Guard(nameof(Username));
-            Password.Guard(nameof(Password));
-            CompanyNumber.Guard(nameof(CompanyNumber));
-        }
     }
 
     public class SignInCommandHandler : IRequestHandler<SignInCommand, string>
@@ -48,9 +40,6 @@ namespace Application.Users.Commands.SignIn
 
         public async Task<string> Handle(SignInCommand request, CancellationToken cancellationToken)
         {
-            request.Guard(nameof(SignInCommand));
-            request.Guard();
-
             applicationUser.Username = request.Username;
             applicationUser.Password = request.Password;
             applicationUser.LanguageCode = request.LanguageCode;
