@@ -2,11 +2,13 @@
 using Application.Common.Jwt;
 using Application.Common.MonitorApi;
 using Domain.Extensions;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Reflection;
 using System.Text;
 
 namespace Application
@@ -40,8 +42,10 @@ namespace Application
                     };
                 });
 
-            services.AddScoped<ApplicationUser>();
             services.AddHttpClient<MonitorApiService>();
+
+            services.AddScoped<ApplicationUser>()
+                .AddMediatR(Assembly.GetExecutingAssembly());
 
             return services;
         }
