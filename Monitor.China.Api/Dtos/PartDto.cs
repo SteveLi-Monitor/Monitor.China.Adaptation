@@ -4,12 +4,7 @@ using Monitor.API.Infrastructure;
 namespace Monitor.China.Api.Dtos
 {
     [ReadableEntity(ApiCategory.Inventory, ApiEntityNamespace.Part)]
-    public class PartDto
+    public class PartDto : Domain.Dtos.PartDto
     {
-        //Monitor.API.Inventory.Part
-
-        public long Id { get; set; }
-
-        public string PartNumber { get; set; }
     }
 }
