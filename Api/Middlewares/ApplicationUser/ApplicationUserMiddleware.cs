@@ -24,7 +24,7 @@ namespace Api.Middlewares.ApplicationUser
 
                 if (claim != null)
                 {
-                    applicationUser = DeserializeApplicationUser(claim.Value);
+                    applicationUser.CopyFrom(DeserializeApplicationUser(claim.Value));
                 }
             }
 
