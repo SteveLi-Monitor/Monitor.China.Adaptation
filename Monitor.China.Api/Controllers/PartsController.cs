@@ -23,9 +23,15 @@ namespace Monitor.China.Api.Controllers
         }
 
         [HttpGet]
-        public Task<IEnumerable<PartDto>> Get()
+        public Task<IEnumerable<PartDto>> Get(string options)
         {
-            return query.GetAsync();
+            return query.GetAsync(options);
+        }
+
+        [HttpGet("{id}")]
+        public Task<PartDto> Get(long id)
+        {
+            return query.GetByIdAsync(id);
         }
 
         [HttpPost("Create")]
