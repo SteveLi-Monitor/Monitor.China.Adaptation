@@ -23,6 +23,7 @@ namespace Api
             services
                 .AddApplication(Configuration)
                 .AddInfrastructure(Configuration)
+                .AddSwaggerDocument()
                 .AddControllers();
         }
 
@@ -43,6 +44,9 @@ namespace Api
             app.UseAuthorization();
 
             app.UseApplicationUser();
+
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
 
             app.UseEndpoints(endpoints =>
             {
