@@ -1,5 +1,6 @@
 ﻿using Monitor.API.Client.Repositories;
 using Monitor.China.Api.Bootstrap;
+using Monitor.China.Api.MonitorApis.Commands.Common;
 
 namespace Monitor.China.Api.MonitorApis.Commands
 {
@@ -17,6 +18,11 @@ namespace Monitor.China.Api.MonitorApis.Commands
         public GenericCommand Create()
         {
             return new GenericCommand(apiTransaction, monitorApiRepositoryFactory);
+        }
+
+        public ConfigurationCommand CreateConfigurationCommand()
+        {
+            return new ConfigurationCommand(apiTransaction, monitorApiRepositoryFactory);
         }
     }
 }
