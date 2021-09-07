@@ -1,5 +1,6 @@
 ﻿using Domain.Common;
 using Domain.Extensions;
+using Microsoft.Extensions.Configuration;
 using Monitor.API.Client;
 using System.IO;
 using System.Threading.Tasks;
@@ -9,10 +10,13 @@ namespace Monitor.China.Api.Bootstrap
     public class ApiTransaction
     {
         private readonly IHttpTransactionService httpTransactionService;
+        private readonly MonitorServerSetting monitorServerSetting;
 
-        public ApiTransaction(IHttpTransactionService httpTransactionService)
+        public ApiTransaction(IHttpTransactionService httpTransactionService, IConfiguration configuration)
         {
             this.httpTransactionService = httpTransactionService;
+            monitorServerSetting = configuration.GetSection(nameof(MonitorServerSetting))
+                .Get<MonitorServerSetting>();
         }
 
         public MonitorApiSetting MonitorApiSetting { get; set; }
@@ -35,7 +39,7 @@ namespace Monitor.China.Api.Bootstrap
             return httpTransactionService.BeginAsync(
                 builder =>
                 {
-                    builder.SetServerAddress(MonitorApiSetting.MonitorServerSetting.ServerAddress)
+                    builder.SetServerAddress(monitorServerSetting.ServerAddress)
                            .SetLanguageCode(MonitorApiSetting.MonitorApiUser.LanguageCode)
                            .SetCompanyNumber(MonitorApiSetting.MonitorApiUser.CompanyNumber)
                            .SetUsername(MonitorApiSetting.MonitorApiUser.Username)
@@ -43,12 +47,12 @@ namespace Monitor.China.Api.Bootstrap
 
                     if (setCertificate)
                     {
-                        if (!File.Exists(MonitorApiSetting.MonitorServerSetting.Certificate))
+                        if (!File.Exists(monitorServerSetting.Certificate))
                         {
-                            throw new FileNotFoundException($"File not found: {MonitorApiSetting.MonitorServerSetting.Certificate}");
+                            throw new FileNotFoundException($"File not found: {monitorServerSetting.Certificate}");
                         }
 
-                        builder.SetCertificateFile(MonitorApiSetting.MonitorServerSetting.Certificate);
+                        builder.SetCertificateFile(monitorServerSetting.Certificate);
                     }
 
                     return builder;

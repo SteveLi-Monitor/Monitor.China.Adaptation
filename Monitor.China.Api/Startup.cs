@@ -19,7 +19,7 @@ namespace Monitor.China.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddApi();
+            services.AddApi(Configuration);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
