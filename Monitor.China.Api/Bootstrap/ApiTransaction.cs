@@ -1,5 +1,6 @@
 ﻿using Domain.Common;
 using Domain.Extensions;
+using Microsoft.Extensions.Configuration;
 using Monitor.API.Client;
 using System.IO;
 using System.Threading.Tasks;
@@ -9,13 +10,16 @@ namespace Monitor.China.Api.Bootstrap
     public class ApiTransaction
     {
         private readonly IHttpTransactionService httpTransactionService;
+        private readonly MonitorServerSetting monitorServerSetting;
 
-        public ApiTransaction(IHttpTransactionService httpTransactionService)
+        public ApiTransaction(IHttpTransactionService httpTransactionService, IConfiguration configuration)
         {
             this.httpTransactionService = httpTransactionService;
+            monitorServerSetting = configuration.GetSection(nameof(MonitorServerSetting))
+                .Get<MonitorServerSetting>();
         }
 
-        public MonitorApiSetting MonitorApiSetting { get; set; }
+        public MonitorApiUser MonitorApiUser { get; set; }
 
         public Task<IHttpTransaction> CreateAsync()
         {
@@ -29,26 +33,26 @@ namespace Monitor.China.Api.Bootstrap
 
         private Task<IHttpTransaction> CreateAsync(bool setCertificate)
         {
-            MonitorApiSetting.Guard(nameof(MonitorApiSetting));
-            MonitorApiSetting.Guard();
+            MonitorApiUser.Guard(nameof(MonitorApiUser));
+            MonitorApiUser.Guard();
 
             return httpTransactionService.BeginAsync(
                 builder =>
                 {
-                    builder.SetServerAddress(MonitorApiSetting.MonitorServerSetting.ServerAddress)
-                           .SetLanguageCode(MonitorApiSetting.MonitorApiUser.LanguageCode)
-                           .SetCompanyNumber(MonitorApiSetting.MonitorApiUser.CompanyNumber)
-                           .SetUsername(MonitorApiSetting.MonitorApiUser.Username)
-                           .SetPassword(MonitorApiSetting.MonitorApiUser.Password);
+                    builder.SetServerAddress(monitorServerSetting.ServerAddress)
+                           .SetLanguageCode(MonitorApiUser.LanguageCode)
+                           .SetCompanyNumber(MonitorApiUser.CompanyNumber)
+                           .SetUsername(MonitorApiUser.Username)
+                           .SetPassword(MonitorApiUser.Password);
 
                     if (setCertificate)
                     {
-                        if (!File.Exists(MonitorApiSetting.MonitorServerSetting.Certificate))
+                        if (!File.Exists(monitorServerSetting.Certificate))
                         {
-                            throw new FileNotFoundException($"File not found: {MonitorApiSetting.MonitorServerSetting.Certificate}");
+                            throw new FileNotFoundException($"File not found: {monitorServerSetting.Certificate}");
                         }
 
-                        builder.SetCertificateFile(MonitorApiSetting.MonitorServerSetting.Certificate);
+                        builder.SetCertificateFile(monitorServerSetting.Certificate);
                     }
 
                     return builder;

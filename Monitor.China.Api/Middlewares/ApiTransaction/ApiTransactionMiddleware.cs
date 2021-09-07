@@ -23,32 +23,32 @@ namespace Monitor.China.Api.Middlewares.ApiTransaction
         {
             if (context.Request.Path.StartsWithSegments(PathString.FromUriComponent("/api")))
             {
-                var header = context.Request.Headers[Constants.MonitorApiSettingHeader];
+                var header = context.Request.Headers[Constants.MonitorApiUserHeader];
 
                 if (StringValues.IsNullOrEmpty(header))
                 {
-                    throw new RequestHeaderNotFoundException(Constants.MonitorApiSettingHeader);
+                    throw new RequestHeaderNotFoundException(Constants.MonitorApiUserHeader);
                 }
 
-                apiTransaction.MonitorApiSetting = DeserializeMonitorApiSetting(header);
+                apiTransaction.MonitorApiUser = DeserializeMonitorApiUser(header);
             }
 
             await next(context);
         }
 
-        private MonitorApiSetting DeserializeMonitorApiSetting(string value)
+        private MonitorApiUser DeserializeMonitorApiUser(string value)
         {
             try
             {
-                var monitorApiSetting = JsonConvert.DeserializeObject<MonitorApiSetting>(value);
-                monitorApiSetting.Guard(nameof(monitorApiSetting));
-                monitorApiSetting.Guard();
-                return monitorApiSetting;
+                var monitorApiUser = JsonConvert.DeserializeObject<MonitorApiUser>(value);
+                monitorApiUser.Guard(nameof(monitorApiUser));
+                monitorApiUser.Guard();
+                return monitorApiUser;
             }
             catch (Exception e)
             {
                 throw new InvalidOperationException(
-                    $"{nameof(MonitorApiSetting)} is invalid: {value}.", e);
+                    $"{nameof(MonitorApiUser)} is invalid: {value}.", e);
             }
         }
     }

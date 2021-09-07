@@ -11,9 +11,7 @@ namespace Application.Common.MonitorApi
 {
     public class MonitorApiService
     {
-        private readonly IConfiguration configuration;
         private readonly ApplicationUser applicationUser;
-        private readonly MonitorServerSetting monitorServerSetting;
 
         public MonitorApiService(
             HttpClient httpClient,
@@ -25,15 +23,9 @@ namespace Application.Common.MonitorApi
             monitorApiServiceSetting.Guard(nameof(monitorApiServiceSetting));
             monitorApiServiceSetting.Guard();
 
-            monitorServerSetting = configuration
-                .GetSection(nameof(MonitorServerSetting)).Get<MonitorServerSetting>();
-            monitorServerSetting.Guard(nameof(monitorServerSetting));
-            monitorServerSetting.Guard();
-
             httpClient.BaseAddress = new Uri(monitorApiServiceSetting.ServiceAddress);
 
             HttpClient = httpClient;
-            this.configuration = configuration;
             this.applicationUser = applicationUser;
         }
 
@@ -53,11 +45,13 @@ namespace Application.Common.MonitorApi
             applicationUser.Guard();
 
             HttpClient.DefaultRequestHeaders.Add(
-                Constants.MonitorApiSettingHeader,
-                JsonConvert.SerializeObject(new MonitorApiSetting
+                Constants.MonitorApiUserHeader,
+                JsonConvert.SerializeObject(new MonitorApiUser
                 {
-                    MonitorServerSetting = monitorServerSetting,
-                    MonitorApiUser = applicationUser
+                    Username = applicationUser.Username,
+                    Password = applicationUser.Password,
+                    LanguageCode = applicationUser.LanguageCode,
+                    CompanyNumber = applicationUser.CompanyNumber
                 }));
         }
     }
