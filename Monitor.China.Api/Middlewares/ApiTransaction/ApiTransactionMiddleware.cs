@@ -23,11 +23,11 @@ namespace Monitor.China.Api.Middlewares.ApiTransaction
         {
             if (context.Request.Path.StartsWithSegments(PathString.FromUriComponent("/api")))
             {
-                var header = context.Request.Headers[Constants.MonitorApiUser];
+                var header = context.Request.Headers[Constants.MonitorApiUserHeader];
 
                 if (StringValues.IsNullOrEmpty(header))
                 {
-                    throw new RequestHeaderNotFoundException(Constants.MonitorApiUser);
+                    throw new RequestHeaderNotFoundException(Constants.MonitorApiUserHeader);
                 }
 
                 apiTransaction.MonitorApiUser = DeserializeMonitorApiUser(header);

@@ -45,7 +45,7 @@ namespace Application.Common.MonitorApi
             applicationUser.Guard();
 
             HttpClient.DefaultRequestHeaders.Add(
-                Constants.MonitorApiUser,
+                Constants.MonitorApiUserHeader,
                 JsonConvert.SerializeObject(new MonitorApiUser
                 {
                     Username = applicationUser.Username,
