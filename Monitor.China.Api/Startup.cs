@@ -19,7 +19,8 @@ namespace Monitor.China.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddApi(Configuration);
+            services.AddApi(Configuration)
+                .AddSqlAnywhere();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

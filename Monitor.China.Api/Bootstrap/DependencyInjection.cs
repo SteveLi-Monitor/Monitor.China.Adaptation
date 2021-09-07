@@ -28,5 +28,13 @@ namespace Monitor.China.Api.Bootstrap
 
             return services;
         }
+
+        public static IServiceCollection AddSqlAnywhere(this IServiceCollection services)
+        {
+            services.AddScoped<ConnectionStringService>()
+                .AddScoped<SaDbConnection>();
+
+            return services;
+        }
     }
 }
