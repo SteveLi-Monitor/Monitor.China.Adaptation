@@ -19,7 +19,7 @@ namespace Monitor.China.Api.Bootstrap
                 .Get<MonitorServerSetting>();
         }
 
-        public MonitorApiSetting MonitorApiSetting { get; set; }
+        public MonitorApiUser MonitorApiUser { get; set; }
 
         public Task<IHttpTransaction> CreateAsync()
         {
@@ -33,17 +33,17 @@ namespace Monitor.China.Api.Bootstrap
 
         private Task<IHttpTransaction> CreateAsync(bool setCertificate)
         {
-            MonitorApiSetting.Guard(nameof(MonitorApiSetting));
-            MonitorApiSetting.Guard();
+            MonitorApiUser.Guard(nameof(MonitorApiUser));
+            MonitorApiUser.Guard();
 
             return httpTransactionService.BeginAsync(
                 builder =>
                 {
                     builder.SetServerAddress(monitorServerSetting.ServerAddress)
-                           .SetLanguageCode(MonitorApiSetting.MonitorApiUser.LanguageCode)
-                           .SetCompanyNumber(MonitorApiSetting.MonitorApiUser.CompanyNumber)
-                           .SetUsername(MonitorApiSetting.MonitorApiUser.Username)
-                           .SetPassword(MonitorApiSetting.MonitorApiUser.Password);
+                           .SetLanguageCode(MonitorApiUser.LanguageCode)
+                           .SetCompanyNumber(MonitorApiUser.CompanyNumber)
+                           .SetUsername(MonitorApiUser.Username)
+                           .SetPassword(MonitorApiUser.Password);
 
                     if (setCertificate)
                     {

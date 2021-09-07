@@ -53,7 +53,7 @@ namespace Application.Common.MonitorApi
             applicationUser.Guard();
 
             HttpClient.DefaultRequestHeaders.Add(
-                Constants.MonitorApiSettingHeader,
+                Constants.MonitorApiUser,
                 JsonConvert.SerializeObject(new MonitorApiSetting
                 {
                     MonitorServerSetting = monitorServerSetting,
