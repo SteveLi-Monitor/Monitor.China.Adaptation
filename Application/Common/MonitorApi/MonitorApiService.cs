@@ -48,7 +48,7 @@ namespace Application.Common.MonitorApi
                 Constants.MonitorApiUserHeader,
                 JsonConvert.SerializeObject(new MonitorApiUser
                 {
-                    Username = applicationUser.Username,
+                    ApiUsername = applicationUser.ApiUsername,
                     Password = applicationUser.Password,
                     LanguageCode = applicationUser.LanguageCode,
                     CompanyNumber = applicationUser.CompanyNumber

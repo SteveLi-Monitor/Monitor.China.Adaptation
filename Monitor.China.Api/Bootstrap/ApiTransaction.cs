@@ -40,9 +40,9 @@ namespace Monitor.China.Api.Bootstrap
                 builder =>
                 {
                     builder.SetServerAddress(monitorServerSetting.ServerAddress)
-                           .SetLanguageCode(MonitorApiUser.LanguageCode)
+                           .SetLanguageCode(MonitorApiUser.LanguageCode.ToString())
                            .SetCompanyNumber(MonitorApiUser.CompanyNumber)
-                           .SetUsername(MonitorApiUser.Username)
+                           .SetUsername(MonitorApiUser.ApiUsername)
                            .SetPassword(MonitorApiUser.Password);
 
                     if (setCertificate)

@@ -16,8 +16,6 @@ namespace Application.Users.Commands.SignIn
 
         public string Password { get; set; }
 
-        public string LanguageCode { get; set; } = "ZH";
-
         public string CompanyNumber { get; set; }
     }
 
@@ -40,9 +38,8 @@ namespace Application.Users.Commands.SignIn
 
         public async Task<string> Handle(SignInCommand request, CancellationToken cancellationToken)
         {
-            applicationUser.Username = request.Username;
+            applicationUser.ApiUsername = request.Username;
             applicationUser.Password = request.Password;
-            applicationUser.LanguageCode = request.LanguageCode;
             applicationUser.CompanyNumber = request.CompanyNumber;
 
             await monitorApiService.SignInAsync();
