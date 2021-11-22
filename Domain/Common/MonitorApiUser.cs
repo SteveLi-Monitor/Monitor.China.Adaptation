@@ -1,20 +1,21 @@
-﻿using Domain.Extensions;
+﻿using Domain.Enums;
+using Domain.Extensions;
 
 namespace Domain.Common
 {
     public class MonitorApiUser
     {
-        public string Username { get; set; }
+        public string ApiUsername { get; set; }
 
         public string Password { get; set; }
 
-        public string LanguageCode { get; set; } = "ZH";
+        public LanguageCode LanguageCode { get; set; } = LanguageCode.ZH;
 
         public string CompanyNumber { get; set; }
 
         public void Guard()
         {
-            Username.Guard(nameof(Username));
+            ApiUsername.Guard(nameof(ApiUsername));
             Password.Guard(nameof(Password));
             CompanyNumber.Guard(nameof(CompanyNumber));
         }

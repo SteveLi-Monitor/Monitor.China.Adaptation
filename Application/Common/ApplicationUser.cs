@@ -10,7 +10,7 @@ namespace Application.Common
             applicationUser.Guard(nameof(applicationUser));
             applicationUser.Guard();
 
-            Username = applicationUser.Username;
+            ApiUsername = applicationUser.ApiUsername;
             Password = applicationUser.Password;
             LanguageCode = applicationUser.LanguageCode;
             CompanyNumber = applicationUser.CompanyNumber;
