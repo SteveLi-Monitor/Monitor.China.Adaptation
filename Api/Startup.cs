@@ -24,6 +24,15 @@ namespace Api
                 .AddApplication(Configuration)
                 .AddInfrastructure(Configuration)
                 .AddSwaggerDocument()
+                .AddCors(options =>
+                {
+                    options.AddDefaultPolicy(builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
+                    });
+                })
                 .AddControllers();
         }
 
@@ -39,6 +48,8 @@ namespace Api
             }
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthentication();
             app.UseAuthorization();
