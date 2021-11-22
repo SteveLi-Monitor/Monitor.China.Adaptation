@@ -1,16 +1,21 @@
 ﻿using Application.Common;
 using Application.Common.Jwt;
 using Application.Common.MonitorApi;
+using Domain.Dtos;
+using Domain.Enums;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using Serilog;
+using System;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Application.Users.Commands.SignIn
 {
-    public class SignInCommand : IRequest<string>
+    public class SignInCommand : IRequest<SignInCommandResp>
     {
         public string Username { get; set; }
 
@@ -19,11 +24,12 @@ namespace Application.Users.Commands.SignIn
         public string CompanyNumber { get; set; }
     }
 
-    public class SignInCommandHandler : IRequestHandler<SignInCommand, string>
+    public class SignInCommandHandler : IRequestHandler<SignInCommand, SignInCommandResp>
     {
-        private ApplicationUser applicationUser;
+        private readonly ApplicationUser applicationUser;
         private readonly MonitorApiService monitorApiService;
         private readonly JwtTokenOption jwtTokenOption;
+        private readonly JsonSerializerSettings jsonSerializerSettings;
 
         public SignInCommandHandler(
             ApplicationUser applicationUser,
@@ -32,23 +38,65 @@ namespace Application.Users.Commands.SignIn
         {
             this.applicationUser = applicationUser;
             this.monitorApiService = monitorApiService;
+
             jwtTokenOption = configuration
                 .GetSection(nameof(JwtTokenOption)).Get<JwtTokenOption>();
+
+            jsonSerializerSettings = new JsonSerializerSettings
+            {
+                ContractResolver = new DefaultContractResolver
+                {
+                    NamingStrategy = new CamelCaseNamingStrategy()
+                }
+            };
         }
 
-        public async Task<string> Handle(SignInCommand request, CancellationToken cancellationToken)
+        public async Task<SignInCommandResp> Handle(SignInCommand request, CancellationToken cancellationToken)
         {
+            request.Username = request.Username.ToUpper();
+
             applicationUser.ApiUsername = request.Username;
             applicationUser.Password = request.Password;
             applicationUser.CompanyNumber = request.CompanyNumber;
 
-            await monitorApiService.SignInAsync();
+            var loginResp = await monitorApiService.SignInAsync();
 
-            return new JwtTokenBuilder(jwtTokenOption)
-                .AddClaim(
-                    new Claim(nameof(ApplicationUser),
-                    JsonConvert.SerializeObject(applicationUser)))
-                .WriteToken();
+            return new SignInCommandResp
+            {
+                Token = new JwtTokenBuilder(jwtTokenOption)
+                    .AddClaim(
+                        new Claim(nameof(SignInCommandClaims.ApplicationUser),
+                        JsonConvert.SerializeObject(GetApplicationUser(request, loginResp), jsonSerializerSettings)))
+                    .WriteToken(),
+            };
+        }
+
+        private SignInCommandClaims.ApplicationUser GetApplicationUser(SignInCommand request, LoginDto.LoginResp loginResp)
+        {
+            if (!Enum.TryParse(loginResp.LanguageCodeCode, out LanguageCode languageCode))
+            {
+                Log.Warning("Language code '{0}' is not supported. 'EN' is used instead.", loginResp.LanguageCodeCode);
+                languageCode = LanguageCode.EN;
+            }
+
+            return new SignInCommandClaims.ApplicationUser
+            {
+                Id = loginResp.ApplicationUserId,
+                Username = loginResp.ApplicationUserUsername,
+                ApiUsername = loginResp.ApiUserName,
+                Password = request.Password,
+                LanguageCode = languageCode.ToString(),
+                CompanyNumber = request.CompanyNumber,
+                Person = string.IsNullOrEmpty(loginResp.PersonId) ?
+                    null :
+                    new SignInCommandClaims.Person
+                    {
+                        Id = loginResp.PersonId,
+                        EmployeeNumber = loginResp.PersonEmployeeNumber,
+                        FirstName = loginResp.PersonFirstName,
+                        LastName = loginResp.PersonLastName,
+                    },
+            };
         }
     }
 }

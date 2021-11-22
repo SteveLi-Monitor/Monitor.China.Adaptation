@@ -1,10 +1,13 @@
-﻿using Domain;
+﻿using Application.Common.Settings;
+using Domain;
 using Domain.Common;
+using Domain.Dtos;
 using Domain.Extensions;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 
 namespace Application.Common.MonitorApi
@@ -12,6 +15,7 @@ namespace Application.Common.MonitorApi
     public class MonitorApiService
     {
         private readonly ApplicationUser applicationUser;
+        private readonly ApplicationSetting applicationSetting;
 
         public MonitorApiService(
             HttpClient httpClient,
@@ -20,10 +24,12 @@ namespace Application.Common.MonitorApi
         {
             var monitorApiServiceSetting = configuration
                 .GetSection(nameof(MonitorApiServiceSetting)).Get<MonitorApiServiceSetting>();
-            monitorApiServiceSetting.Guard(nameof(monitorApiServiceSetting));
-            monitorApiServiceSetting.Guard();
+
+            applicationSetting = configuration
+                .GetSection(nameof(ApplicationSetting)).Get<ApplicationSetting>();
 
             httpClient.BaseAddress = new Uri(monitorApiServiceSetting.ServiceAddress);
+            httpClient.Timeout = TimeSpan.FromSeconds(5);
 
             HttpClient = httpClient;
             this.applicationUser = applicationUser;
@@ -31,28 +37,37 @@ namespace Application.Common.MonitorApi
 
         public HttpClient HttpClient { get; }
 
-        public async Task SignInAsync()
+        public async Task<LoginDto.LoginResp> SignInAsync()
         {
-            SetMonitorApiSettingHeader();
+            using var request = CreateRequest(HttpMethod.Post, "/api/Login");
+            request.Content = JsonContent.Create(
+                new LoginDto.LoginReq
+                {
+                    Identifier = applicationSetting.ExtraFieldIdentifiers.PersonApiUserName
+                });
 
-            using var response = await HttpClient.PostAsync("/api/Login", null);
+            using var response = await HttpClient.SendAsync(request);
             response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadFromJsonAsync<LoginDto.LoginResp>();
         }
 
-        private void SetMonitorApiSettingHeader()
+        private HttpRequestMessage CreateRequest(HttpMethod httpMethod, string url)
         {
             applicationUser.Guard(nameof(applicationUser));
             applicationUser.Guard();
 
-            HttpClient.DefaultRequestHeaders.Add(
-                Constants.MonitorApiUserHeader,
-                JsonConvert.SerializeObject(new MonitorApiUser
-                {
-                    ApiUsername = applicationUser.ApiUsername,
-                    Password = applicationUser.Password,
-                    LanguageCode = applicationUser.LanguageCode,
-                    CompanyNumber = applicationUser.CompanyNumber
-                }));
+            var request = new HttpRequestMessage(httpMethod, url);
+            request.Headers.Add(
+                    Constants.MonitorApiUserHeader,
+                    JsonConvert.SerializeObject(new MonitorApiUser
+                    {
+                        ApiUsername = applicationUser.ApiUsername,
+                        Password = applicationUser.Password,
+                        LanguageCode = applicationUser.LanguageCode,
+                        CompanyNumber = applicationUser.CompanyNumber,
+                    }));
+            return request;
         }
     }
 }

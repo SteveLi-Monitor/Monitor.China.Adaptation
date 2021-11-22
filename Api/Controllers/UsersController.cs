@@ -8,8 +8,8 @@ namespace Api.Controllers
     [ApiController]
     public class UsersController : ApiControllerBase
     {
-        [HttpPost("signin")]
-        public async Task<ActionResult<string>> SignInAsync(SignInCommand command)
+        [HttpPost("SignIn")]
+        public async Task<ActionResult<SignInCommandResp>> SignIn(SignInCommand command)
         {
             return Ok(await Mediator.Send(command));
         }
