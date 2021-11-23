@@ -1,6 +1,6 @@
 ﻿using Domain.Extensions;
 
-namespace Application.Common.MonitorApi
+namespace Application.MonitorApis
 {
     public class MonitorApiServiceSetting
     {

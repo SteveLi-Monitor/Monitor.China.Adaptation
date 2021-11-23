@@ -1,4 +1,5 @@
-﻿using Application.Common.Settings;
+﻿using Application.Common;
+using Application.Common.Settings;
 using Domain;
 using Domain.Common;
 using Domain.Dtos;
@@ -10,7 +11,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
-namespace Application.Common.MonitorApi
+namespace Application.MonitorApis
 {
     public class MonitorApiService
     {
