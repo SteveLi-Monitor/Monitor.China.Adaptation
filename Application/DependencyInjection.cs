@@ -1,8 +1,8 @@
 ﻿using Application.Common;
 using Application.Common.Behaviours;
 using Application.Common.Jwt;
-using Application.Common.MonitorApi;
 using Application.Common.Settings;
+using Application.MonitorApis;
 using Domain.Extensions;
 using FluentValidation;
 using MediatR;

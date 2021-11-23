@@ -1,6 +1,6 @@
 ﻿using Application.Common;
 using Application.Common.Jwt;
-using Application.Common.MonitorApi;
+using Application.MonitorApis;
 using Domain.Dtos;
 using Domain.Enums;
 using MediatR;
