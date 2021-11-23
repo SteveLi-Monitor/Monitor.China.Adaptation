@@ -53,6 +53,24 @@ namespace Application.MonitorApis
             return await response.Content.ReadFromJsonAsync<LoginDto.LoginResp>();
         }
 
+        #region CommonCommandsController
+
+        private const string commonCommandsUrl = "/api/Common/Commands";
+
+        public async Task<CommonCommandsDto.GetMonitorConfigurationResp> GetMonitorConfiguration()
+        {
+            using var request = CreateRequestWithDefaultApiUser(
+                HttpMethod.Post,
+                $"{commonCommandsUrl}/GetMonitorConfiguration");
+
+            using var response = await HttpClient.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadFromJsonAsync<CommonCommandsDto.GetMonitorConfigurationResp>();
+        }
+
+        #endregion CommonCommandsController
+
         private HttpRequestMessage CreateRequest(HttpMethod httpMethod, string url)
         {
             applicationUser.Guard(nameof(applicationUser));
@@ -67,6 +85,21 @@ namespace Application.MonitorApis
                         Password = applicationUser.Password,
                         LanguageCode = applicationUser.LanguageCode,
                         CompanyNumber = applicationUser.CompanyNumber,
+                    }));
+            return request;
+        }
+
+        private HttpRequestMessage CreateRequestWithDefaultApiUser(HttpMethod httpMethod, string url)
+        {
+            var request = new HttpRequestMessage(httpMethod, url);
+            request.Headers.Add(
+                    Constants.MonitorApiUserHeader,
+                    JsonConvert.SerializeObject(new MonitorApiUser
+                    {
+                        ApiUsername = applicationSetting.DefaultApiUser.ApiUsername,
+                        Password = applicationSetting.DefaultApiUser.Password,
+                        LanguageCode = applicationSetting.DefaultApiUser.LanguageCode,
+                        CompanyNumber = applicationSetting.DefaultApiUser.CompanyNumber,
                     }));
             return request;
         }
