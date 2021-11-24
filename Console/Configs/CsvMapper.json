@@ -1,0 +1,9 @@
+{
+  "Part": {
+    "FilePath": "Data\\Part.csv",
+    "PartNumber": 1,
+    "PartName": 2,
+    "PartType": 3,
+    "AdditionalName": 4
+  }
+}
