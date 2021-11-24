@@ -8,6 +8,8 @@ namespace Console
 {
     internal static class Program
     {
+        private static IConfiguration configuration;
+
         private static async Task Main(string[] args)
         {
             var services = new ServiceCollection();
@@ -22,20 +24,21 @@ namespace Console
 
         private static void BootstrapApp(IServiceCollection services)
         {
-            var configuration = BuildConfiguration();
-            BuildSerilog(configuration);
+            BuildConfiguration();
+            BuildSerilog();
             ConfigureServices(services);
         }
 
-        private static IConfiguration BuildConfiguration()
+        private static void BuildConfiguration()
         {
-            return new ConfigurationBuilder()
+            configuration = new ConfigurationBuilder()
                 .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
                 .AddJsonFile("Configs/appsettings.json", false)
+                .AddJsonFile("Configs/CsvMapper.json", false)
                 .Build();
         }
 
-        private static void BuildSerilog(IConfiguration configuration)
+        private static void BuildSerilog()
         {
             Log.Logger = new LoggerConfiguration()
                 .ReadFrom.Configuration(configuration)
@@ -48,7 +51,10 @@ namespace Console
 
         private static void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<App>();
+            services.AddSingleton(configuration)
+                .AddClassMaps()
+                .AddServices()
+                .AddTransient<App>();
         }
     }
 }

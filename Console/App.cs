@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿using Console.ImportServices;
+using Serilog;
 using System;
 using System.Threading.Tasks;
 
@@ -6,6 +7,13 @@ namespace Console
 {
     internal class App
     {
+        private readonly ServiceResolver serviceResolver;
+
+        public App(ServiceResolver serviceResolver)
+        {
+            this.serviceResolver = serviceResolver;
+        }
+
         public async Task StartAsync()
         {
             Log.Debug($"{nameof(App)}.{nameof(StartAsync)}: Started.");
@@ -26,6 +34,10 @@ namespace Console
                     {
                         case 0:
                             Environment.Exit(0);
+                            break;
+
+                        case 1:
+                            await serviceResolver.Resolve(nameof(PartImport)).StartAsync();
                             break;
 
                         default:
