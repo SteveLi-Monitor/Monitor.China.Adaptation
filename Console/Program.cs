@@ -31,7 +31,7 @@ namespace Console
         {
             return new ConfigurationBuilder()
                 .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-                .AddJsonFile("appsettings.json", false)
+                .AddJsonFile("Configs/appsettings.json", false)
                 .Build();
         }
 
