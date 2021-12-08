@@ -5,6 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Monitor.China.Api.Bootstrap;
 using Monitor.China.Api.Middlewares.ApiTransaction;
+using Serilog;
+using System;
 
 namespace Monitor.China.Api
 {
@@ -19,6 +21,15 @@ namespace Monitor.China.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(Configuration)
+                .Enrich.FromLogContext()
+                .WriteTo.Console()
+                .WriteTo.File(
+                    AppDomain.CurrentDomain.BaseDirectory + "Logs/log.txt",
+                    rollingInterval: RollingInterval.Day)
+                .CreateLogger();
+
             services.AddApi(Configuration)
                 .AddSqlAnywhere();
 
