@@ -1,9 +1,9 @@
 ﻿using Domain;
 using Domain.Common;
+using Domain.Exceptions;
 using Domain.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
-using Monitor.China.Api.Exceptions;
 using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
@@ -47,8 +47,7 @@ namespace Monitor.China.Api.Middlewares.ApiTransaction
             }
             catch (Exception e)
             {
-                throw new InvalidOperationException(
-                    $"{nameof(MonitorApiUser)} is invalid: {value}.", e);
+                throw new InvalidRequestHeaderException(Constants.MonitorApiUserHeader, value, e);
             }
         }
     }
