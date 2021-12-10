@@ -28,6 +28,13 @@ namespace Api.Controllers
                 return BadRequest(e.Errors);
             }
 
+            if (context.Error is MonitorApiException monitorApiEx)
+            {
+                return Problem(
+                    detail: monitorApiEx.ProblemDetails.Detail,
+                    title: monitorApiEx.ProblemDetails.Title);
+            }
+
             return Problem(
                 detail: context.Error.StackTrace,
                 title: context.Error.Message);
@@ -43,7 +50,16 @@ namespace Api.Controllers
                 return BadRequest(e.Errors);
             }
 
-            return Problem();
+            if (context.Error is MonitorApiException monitorApiEx)
+            {
+                return Problem(
+                    detail: monitorApiEx.ProblemDetails.Detail,
+                    title: monitorApiEx.ProblemDetails.Title);
+            }
+
+            return Problem(
+                detail: context.Error.StackTrace,
+                title: context.Error.Message);
         }
     }
 }
