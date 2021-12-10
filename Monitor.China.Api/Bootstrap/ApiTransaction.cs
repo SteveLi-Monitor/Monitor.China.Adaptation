@@ -2,7 +2,6 @@
 using Domain.Extensions;
 using Microsoft.Extensions.Configuration;
 using Monitor.API.Client;
-using System.IO;
 using System.Threading.Tasks;
 
 namespace Monitor.China.Api.Bootstrap
@@ -47,11 +46,6 @@ namespace Monitor.China.Api.Bootstrap
 
                     if (setCertificate)
                     {
-                        if (!File.Exists(monitorServerSetting.Certificate))
-                        {
-                            throw new FileNotFoundException($"File not found: {monitorServerSetting.Certificate}");
-                        }
-
                         builder.SetCertificateFile(monitorServerSetting.Certificate);
                     }
 

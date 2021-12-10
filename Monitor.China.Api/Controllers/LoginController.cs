@@ -25,8 +25,6 @@ namespace Monitor.China.Api.Controllers
         {
             request.Guard();
 
-            await apiTransaction.CreateAsync();
-
             var sql = @"
 select
     ApplicationUser.Id as ApplicationUserId,
