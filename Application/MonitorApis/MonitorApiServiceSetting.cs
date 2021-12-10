@@ -1,4 +1,4 @@
-﻿using Domain.Extensions;
+﻿using System;
 
 namespace Application.MonitorApis
 {
@@ -8,7 +8,14 @@ namespace Application.MonitorApis
 
         public void Guard()
         {
-            ServiceAddress.Guard(nameof(ServiceAddress));
+            try
+            {
+                new Uri(ServiceAddress, UriKind.Absolute);
+            }
+            catch (Exception e)
+            {
+                throw new ArgumentException($"Invalid {nameof(ServiceAddress)}: {ServiceAddress}.", e);
+            }
         }
     }
 }
