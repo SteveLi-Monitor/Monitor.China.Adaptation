@@ -13,21 +13,27 @@ namespace Application.Common.Behaviours
     {
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
+            var requestName = typeof(TRequest).FullName;
+
             try
             {
-                return await next();
+                Log.Debug($"Request started: {requestName}.");
+                var resp = await next();
+
+                Log.Debug($"Request finished: {requestName}.");
+                return resp;
             }
             catch (ValidationException validationEx)
             {
-                Log.Error($"Validation failed for request {typeof(TRequest).FullName}: {Environment.NewLine}" +
-                    $"Request: {JsonConvert.SerializeObject(request, Formatting.Indented)} {Environment.NewLine}" +
+                Log.Error($"Validation failed for request {requestName}:" + Environment.NewLine +
+                    $"Request: {JsonConvert.SerializeObject(request, Formatting.Indented)}" + Environment.NewLine +
                     $"Errors: {JsonConvert.SerializeObject(validationEx.Errors, Formatting.Indented)}");
 
                 throw;
             }
             catch (Exception e)
             {
-                Log.Error(e, $"Unhandled exception for request {typeof(TRequest).FullName}: {Environment.NewLine}" +
+                Log.Error(e, $"Unhandled exception for request {requestName}:" + Environment.NewLine +
                     $"Request: {JsonConvert.SerializeObject(request, Formatting.Indented)}");
 
                 throw;
