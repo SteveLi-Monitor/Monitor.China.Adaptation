@@ -31,6 +31,14 @@ namespace Application.Common.Behaviours
 
                 throw;
             }
+            catch (MonitorApiException monitorApiEx)
+            {
+                Log.Error($"{nameof(MonitorApiException)} for request {requestName}:" + Environment.NewLine +
+                    $"Request: {JsonConvert.SerializeObject(request, Formatting.Indented)}" + Environment.NewLine +
+                    $"ProblemDetails: {JsonConvert.SerializeObject(monitorApiEx.ProblemDetails, Formatting.Indented)}");
+
+                throw;
+            }
             catch (Exception e)
             {
                 Log.Error(e, $"Unhandled exception for request {requestName}:" + Environment.NewLine +

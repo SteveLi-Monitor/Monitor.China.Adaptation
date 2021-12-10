@@ -1,9 +1,11 @@
 ﻿using Application.Common;
+using Application.Common.Exceptions;
 using Application.Common.Settings;
 using Domain;
 using Domain.Common;
 using Domain.Dtos;
 using Domain.Extensions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
@@ -48,7 +50,7 @@ namespace Application.MonitorApis
                 });
 
             using var response = await HttpClient.SendAsync(request);
-            response.EnsureSuccessStatusCode();
+            await EnsureSuccessResponse(response);
 
             return await response.Content.ReadFromJsonAsync<LoginDto.LoginResp>();
         }
@@ -64,7 +66,7 @@ namespace Application.MonitorApis
                 $"{commonCommandsUrl}/GetMonitorConfiguration");
 
             using var response = await HttpClient.SendAsync(request);
-            response.EnsureSuccessStatusCode();
+            await EnsureSuccessResponse(response);
 
             return await response.Content.ReadFromJsonAsync<CommonCommandsDto.GetMonitorConfigurationResp>();
         }
@@ -102,6 +104,14 @@ namespace Application.MonitorApis
                         CompanyNumber = applicationSetting.DefaultApiUser.CompanyNumber,
                     }));
             return request;
+        }
+
+        private async Task EnsureSuccessResponse(HttpResponseMessage response)
+        {
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new MonitorApiException(await response.Content.ReadFromJsonAsync<ProblemDetails>());
+            }
         }
     }
 }
