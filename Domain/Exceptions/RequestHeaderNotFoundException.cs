@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Monitor.China.Api.Exceptions
+namespace Domain.Exceptions
 {
     public class RequestHeaderNotFoundException : Exception
     {

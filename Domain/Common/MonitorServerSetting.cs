@@ -1,4 +1,5 @@
-﻿using Domain.Extensions;
+﻿using System;
+using System.IO;
 
 namespace Domain.Common
 {
@@ -10,7 +11,28 @@ namespace Domain.Common
 
         public void Guard()
         {
-            ServerAddress.Guard(nameof(ServerAddress));
+            GuardServerAddress();
+            GuardCertificate();
+        }
+
+        private void GuardServerAddress()
+        {
+            try
+            {
+                new Uri(ServerAddress, UriKind.Absolute);
+            }
+            catch (Exception e)
+            {
+                throw new ArgumentException($"Invalid {nameof(ServerAddress)}: {ServerAddress}.", e);
+            }
+        }
+
+        private void GuardCertificate()
+        {
+            if (!string.IsNullOrEmpty(Certificate) && !File.Exists(Certificate))
+            {
+                throw new FileNotFoundException($"File not found: {Certificate}");
+            }
         }
     }
 }
