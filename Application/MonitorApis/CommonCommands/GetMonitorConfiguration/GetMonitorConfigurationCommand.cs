@@ -1,11 +1,12 @@
-﻿using MediatR;
+﻿using Application.Common.Interfaces;
+using MediatR;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Application.MonitorApis.CommonCommands.GetMonitorConfiguration
 {
-    public class GetMonitorConfigurationCommand : IRequest<GetMonitorConfigurationCommandResp>
+    public class GetMonitorConfigurationCommand : ValidateRequestBase<GetMonitorConfigurationCommandResp>
     {
     }
 
