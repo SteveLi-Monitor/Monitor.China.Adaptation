@@ -1,4 +1,5 @@
 ﻿using Application.Common;
+using Application.Common.Interfaces;
 using Application.Common.Jwt;
 using Application.MonitorApis;
 using Domain.Dtos;
@@ -15,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Application.Users.Commands.SignIn
 {
-    public class SignInCommand : IRequest<SignInCommandResp>
+    public class SignInCommand : ValidateRequestBase<SignInCommandResp>
     {
         public string Username { get; set; }
 

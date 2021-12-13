@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using Application.Common.Interfaces;
+using FluentValidation;
 using MediatR;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ using ValidationException = Application.Common.Exceptions.ValidationException;
 namespace Application.Common.Behaviours
 {
     public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-        where TRequest : IRequest<TResponse>
+        where TRequest : IValidateRequest<TResponse>
     {
         private readonly IEnumerable<IValidator<TRequest>> validators;
 
@@ -20,7 +21,7 @@ namespace Application.Common.Behaviours
 
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
-            if (validators.Any())
+            if (validators.Any() && request.NeedValidation)
             {
                 var validationResults = await Task.WhenAll(
                     validators.Select(x => x.ValidateAsync(request, cancellationToken)));
