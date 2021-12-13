@@ -3,13 +3,12 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using NSwag.Annotations;
 using System;
 
 namespace Api.Controllers
 {
     [ApiController]
-    [OpenApiIgnore]
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class ErrorController : ControllerBase
     {
         [Route("/error-local-development")]

@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
+using System.Collections.Generic;
 
 namespace Api
 {
@@ -23,7 +25,6 @@ namespace Api
             services
                 .AddApplication(Configuration)
                 .AddInfrastructure(Configuration)
-                .AddSwaggerDocument()
                 .AddCors(options =>
                 {
                     options.AddDefaultPolicy(builder =>
@@ -31,6 +32,37 @@ namespace Api
                         builder.AllowAnyOrigin()
                             .AllowAnyHeader()
                             .AllowAnyMethod();
+                    });
+                })
+                .AddSwaggerGen(options =>
+                {
+                    options.SwaggerDoc("v1", new OpenApiInfo
+                    {
+                        Version = "v1",
+                        Title = "Monitor China API",
+                    });
+                    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                    {
+                        Name = "Authorization",
+                        Description = "Specify the authorization token.",
+                        BearerFormat = "JWT",
+                        Scheme = "bearer",
+                        In = ParameterLocation.Header,
+                        Type = SecuritySchemeType.Http
+                    });
+                    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                    {
+                        {
+                            new OpenApiSecurityScheme
+                            {
+                                Reference = new OpenApiReference
+                                {
+                                    Type = ReferenceType.SecurityScheme,
+                                    Id = "Bearer"
+                                }
+                            },
+                            new List<string>()
+                        }
                     });
                 })
                 .AddControllers();
@@ -47,6 +79,9 @@ namespace Api
                 app.UseExceptionHandler("/error");
             }
 
+            app.UseSwagger();
+            app.UseSwaggerUI();
+
             app.UseRouting();
 
             app.UseCors();
@@ -55,9 +90,6 @@ namespace Api
             app.UseAuthorization();
 
             app.UseApplicationUser();
-
-            app.UseOpenApi();
-            app.UseSwaggerUi3();
 
             app.UseEndpoints(endpoints =>
             {
