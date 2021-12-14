@@ -28,6 +28,12 @@ namespace Monitor.China.Api.Controllers
             return Ok(await query.GetAsync(options));
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<PartDto>> GetById(long id)
+        {
+            return Ok(await query.GetByIdAsync(id));
+        }
+
         [HttpPost("Create")]
         public async Task<ActionResult<EntityCommandResponse>> Create(CreatePart createPart)
         {
