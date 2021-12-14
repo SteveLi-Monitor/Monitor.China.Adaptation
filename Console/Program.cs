@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Console.MonitorApis;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using System;
@@ -54,6 +55,7 @@ namespace Console
             services.AddSingleton(configuration)
                 .AddClassMaps()
                 .AddServices()
+                .AddSingleton<MonitorApiService>()
                 .AddTransient<App>();
         }
     }
