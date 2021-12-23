@@ -59,6 +59,19 @@ namespace Application.MonitorApis
 
         private const string autoCompletesUrl = "/api/AutoCompletes";
 
+        public async Task<AutoCompletesDto.CustomerResp> AutoCompleteOfCustomer(AutoCompletesDto.ReqBase reqBase)
+        {
+            using var request = CreateRequest(
+                HttpMethod.Post,
+                $"{autoCompletesUrl}/Customer");
+            request.Content = JsonContent.Create(reqBase);
+
+            using var response = await HttpClient.SendAsync(request);
+            await EnsureSuccessResponse(response);
+
+            return await response.Content.ReadFromJsonAsync<AutoCompletesDto.CustomerResp>();
+        }
+
         public async Task<AutoCompletesDto.PartResp> AutoCompleteOfPart(AutoCompletesDto.PartReq partReq)
         {
             using var request = CreateRequest(

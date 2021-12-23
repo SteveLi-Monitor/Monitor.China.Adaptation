@@ -5,6 +5,20 @@ namespace Domain.Dtos
 {
     public class AutoCompletesDto
     {
+        public class CustomerResp
+        {
+            public IEnumerable<Customer> Customers { get; set; }
+
+            public class Customer
+            {
+                public string CustomerId { get; set; }
+
+                public string CustomerAlias { get; set; }
+
+                public string CustomerRootName { get; set; }
+            }
+        }
+
         public class PartReq : ReqBase
         {
             public PartReq(string filter) : base(filter)
@@ -34,7 +48,7 @@ namespace Domain.Dtos
             }
         }
 
-        public abstract class ReqBase
+        public class ReqBase
         {
             public ReqBase(string filter)
             {
