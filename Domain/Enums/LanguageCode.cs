@@ -2,7 +2,7 @@
 {
     public enum LanguageCode
     {
-        EN,
-        ZH
+        EN = 2,
+        ZH = 7,
     }
 }
