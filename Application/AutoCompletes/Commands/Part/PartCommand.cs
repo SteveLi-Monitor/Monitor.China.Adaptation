@@ -1,4 +1,6 @@
-﻿using Application.MonitorApis;
+﻿using Application.Common;
+using Application.MonitorApis;
+using Domain.Enums;
 using MediatR;
 using System.Linq;
 using System.Threading;
@@ -14,10 +16,12 @@ namespace Application.AutoCompletes.Commands.Part
     public class PartCommandHandler : IRequestHandler<PartCommand, PartCommandResp>
     {
         private readonly MonitorApiService monitorApiService;
+        private readonly ApplicationUser applicationUser;
 
-        public PartCommandHandler(MonitorApiService monitorApiService)
+        public PartCommandHandler(MonitorApiService monitorApiService, ApplicationUser applicationUser)
         {
             this.monitorApiService = monitorApiService;
+            this.applicationUser = applicationUser;
         }
 
         public async Task<PartCommandResp> Handle(PartCommand request, CancellationToken cancellationToken)
@@ -31,7 +35,7 @@ namespace Application.AutoCompletes.Commands.Part
                     {
                         Id = x.PartId,
                         PartNumber = x.PartPartNumber,
-                        Type = x.PartType,
+                        Type = PartTypeDescription.GetDescription(applicationUser.LanguageCode, (PartType)x.PartType),
                         Description = x.PartDescription,
                     }),
             };
