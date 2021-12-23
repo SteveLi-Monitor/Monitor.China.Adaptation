@@ -1,7 +1,6 @@
 ﻿using Dapper;
 using Microsoft.AspNetCore.Mvc;
 using Monitor.China.Api.Bootstrap;
-using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
 using static Domain.Dtos.AutoCompletesDto;
@@ -22,7 +21,7 @@ namespace Monitor.China.Api.Controllers
         }
 
         [HttpPost("Part")]
-        public async Task<ActionResult<IEnumerable<PartResp>>> Part(PartReq partReq)
+        public async Task<ActionResult<PartResp>> Part(PartReq partReq)
         {
             partReq.Guard();
             partReq.LanguageId = (int)apiTransaction.MonitorApiUser.LanguageCode;
@@ -46,7 +45,11 @@ order by
     Part.PartNumber
 ";
 
-            return Ok(await dbConnection.QueryAsync<PartResp>(sql, partReq));
+            return Ok(
+                new PartResp
+                {
+                    Parts = await dbConnection.QueryAsync<PartResp.Part>(sql, partReq)
+                });
         }
     }
 }

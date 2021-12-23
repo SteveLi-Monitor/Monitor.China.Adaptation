@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Domain.Dtos
 {
@@ -6,22 +7,72 @@ namespace Domain.Dtos
     {
         public class PartReq : ReqBase
         {
+            public PartReq(string filter) : base(filter)
+            {
+            }
+
+            public PartReq() : base()
+            {
+            }
+
             public int LanguageId { get; set; }
         }
 
         public class PartResp
         {
-            public string PartId { get; set; }
+            public IEnumerable<Part> Parts { get; set; }
 
-            public string PartPartNumber { get; set; }
+            public class Part
+            {
+                public string PartId { get; set; }
 
-            public int PartType { get; set; }
+                public string PartPartNumber { get; set; }
 
-            public string PartDescription { get; set; }
+                public int PartType { get; set; }
+
+                public string PartDescription { get; set; }
+            }
         }
 
-        public class ReqBase
+        public abstract class ReqBase
         {
+            public ReqBase(string filter)
+            {
+                if (!string.IsNullOrEmpty(filter))
+                {
+                    var parameters = filter.Split(' ');
+                    for (int i = 0; i < parameters.Length; i++)
+                    {
+                        switch (i)
+                        {
+                            case 0:
+                                Param1 = $"%{parameters[i]}%";
+                                break;
+
+                            case 1:
+                                Param2 = $"%{parameters[i]}%";
+                                break;
+
+                            case 2:
+                                Param3 = $"%{parameters[i]}%";
+                                break;
+
+                            case 3:
+                                Param4 = $"%{parameters[i]}%";
+                                break;
+
+                            case 4:
+                                Param5 = $"%{parameters[i]}%";
+                                break;
+                        }
+                    }
+                }
+            }
+
+            public ReqBase()
+            {
+            }
+
             public const string EmptyParam = "%%";
 
             public int PageSize { get; set; } = 25;
