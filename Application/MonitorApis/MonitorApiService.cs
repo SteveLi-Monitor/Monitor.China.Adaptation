@@ -55,6 +55,25 @@ namespace Application.MonitorApis
             return await response.Content.ReadFromJsonAsync<LoginDto.LoginResp>();
         }
 
+        #region AutoCompletesController
+
+        private const string autoCompletesUrl = "/api/AutoCompletes";
+
+        public async Task<AutoCompletesDto.PartResp> AutoCompleteOfPart(AutoCompletesDto.PartReq partReq)
+        {
+            using var request = CreateRequest(
+                HttpMethod.Post,
+                $"{autoCompletesUrl}/Part");
+            request.Content = JsonContent.Create(partReq);
+
+            using var response = await HttpClient.SendAsync(request);
+            await EnsureSuccessResponse(response);
+
+            return await response.Content.ReadFromJsonAsync<AutoCompletesDto.PartResp>();
+        }
+
+        #endregion
+
         #region CommonCommandsController
 
         private const string commonCommandsUrl = "/api/Common/Commands";
