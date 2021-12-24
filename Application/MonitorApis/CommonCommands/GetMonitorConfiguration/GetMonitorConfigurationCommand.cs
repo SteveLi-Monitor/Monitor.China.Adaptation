@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Application.MonitorApis.CommonCommands.GetMonitorConfiguration
 {
-    public class GetMonitorConfigurationCommand : ValidateRequestBase<GetMonitorConfigurationCommandResp>
+    public class GetMonitorConfigurationCommand : IValidateRequest<GetMonitorConfigurationCommandResp>
     {
+        public bool NeedValidation { get; set; } = true;
     }
 
     public class GetMonitorConfigurationCommandHandler : IRequestHandler<GetMonitorConfigurationCommand, GetMonitorConfigurationCommandResp>

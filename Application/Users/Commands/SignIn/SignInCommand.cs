@@ -16,13 +16,16 @@ using System.Threading.Tasks;
 
 namespace Application.Users.Commands.SignIn
 {
-    public class SignInCommand : ValidateRequestBase<SignInCommandResp>
+    public class SignInCommand : IValidateRequest<SignInCommandResp>
     {
         public string Username { get; set; }
 
         public string Password { get; set; }
 
         public string CompanyNumber { get; set; }
+
+
+        public bool NeedValidation { get; set; } = true;
     }
 
     public class SignInCommandHandler : IRequestHandler<SignInCommand, SignInCommandResp>
