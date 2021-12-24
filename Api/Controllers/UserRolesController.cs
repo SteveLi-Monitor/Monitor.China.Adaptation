@@ -1,4 +1,5 @@
 ﻿using Application.UserRoles.Commands.Create;
+using Application.UserRoles.Commands.Update;
 using Application.UserRoles.Queries.GetAll;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,6 +20,12 @@ namespace Api.Controllers
 
         [HttpPost("Create")]
         public async Task<ActionResult> Create(CreateCommand command)
+        {
+            return Ok(await Mediator.Send(command));
+        }
+
+        [HttpPost("Update")]
+        public async Task<ActionResult> Update(UpdateCommand command)
         {
             return Ok(await Mediator.Send(command));
         }
