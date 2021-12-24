@@ -1,5 +1,6 @@
 using Api.Middlewares.ApplicationUser;
 using Application;
+using AutoMapper;
 using Infrastructure;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Builder;
@@ -101,6 +102,9 @@ namespace Api
             using var serviceScope = serviceScopeFactory.CreateScope();
             var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
             dbContext.Database.EnsureCreated();
+
+            var mapper = serviceScope.ServiceProvider.GetRequiredService<IMapper>();
+            mapper.ConfigurationProvider.AssertConfigurationIsValid();
         }
     }
 }
