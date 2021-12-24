@@ -1,4 +1,5 @@
 ﻿using Application.Common.Interfaces;
+using Application.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -10,6 +11,8 @@ namespace Infrastructure.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
+
+        public DbSet<UserRole> UserRoles { get; set; }
 
         public Task<int> SaveChangesAsync()
         {
