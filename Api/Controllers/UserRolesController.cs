@@ -1,4 +1,5 @@
 ﻿using Application.UserRoles.Commands.Create;
+using Application.UserRoles.Commands.Delete;
 using Application.UserRoles.Commands.Update;
 using Application.UserRoles.Queries.GetAll;
 using Microsoft.AspNetCore.Authorization;
@@ -26,6 +27,12 @@ namespace Api.Controllers
 
         [HttpPost("Update")]
         public async Task<ActionResult> Update(UpdateCommand command)
+        {
+            return Ok(await Mediator.Send(command));
+        }
+
+        [HttpPost("Delete")]
+        public async Task<ActionResult> Delete(DeleteCommand command)
         {
             return Ok(await Mediator.Send(command));
         }
