@@ -9,8 +9,9 @@ using static Application.UserRoles.Queries.GetAll.GetAllQueryResp;
 
 namespace Application.UserRoles.Queries.GetAll
 {
-    public class GetAllQuery : ValidateRequestBase<GetAllQueryResp>
+    public class GetAllQuery : IValidateRequest<GetAllQueryResp>
     {
+        public bool NeedValidation { get; set; } = true;
     }
 
     public class GetAllQueryHandler : IRequestHandler<GetAllQuery, GetAllQueryResp>
