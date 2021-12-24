@@ -7,8 +7,13 @@ using static Domain.Dtos.AutoCompletesDto;
 
 namespace Application.AutoCompletes.Commands.Customer
 {
-    public class CustomerCommand : CommandBase<CustomerCommandResp>
+    public class CustomerCommand : IAutoCompleteCommand<CustomerCommandResp>
     {
+        public int PageSize { get; set; } = 25;
+
+        public string Filter { get; set; }
+
+        public bool NeedValidation { get; set; } = true;
     }
 
     public class CustomerCommandHandler : IRequestHandler<CustomerCommand, CustomerCommandResp>

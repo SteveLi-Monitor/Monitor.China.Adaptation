@@ -9,8 +9,13 @@ using static Domain.Dtos.AutoCompletesDto;
 
 namespace Application.AutoCompletes.Commands.Part
 {
-    public class PartCommand : CommandBase<PartCommandResp>
+    public class PartCommand : IAutoCompleteCommand<PartCommandResp>
     {
+        public int PageSize { get; set; } = 25;
+
+        public string Filter { get; set; }
+
+        public bool NeedValidation { get; set; } = true;
     }
 
     public class PartCommandHandler : IRequestHandler<PartCommand, PartCommandResp>
