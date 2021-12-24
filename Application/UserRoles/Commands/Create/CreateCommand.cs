@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Application.UserRoles.Commands.Create
 {
-    public class CreateCommand : ValidateRequestBase<Unit>, IMapTo<UserRole>
+    public class CreateCommand : MapToBase<UserRole>, IValidateRequest<Unit>
     {
         public CreateCommand()
         {
@@ -20,7 +20,10 @@ namespace Application.UserRoles.Commands.Create
 
         public IList<UiComponent> AllowedUiComponents { get; set; }
 
-        public void Mapping(Profile profile)
+
+        public bool NeedValidation { get; set; } = true;
+
+        public override void Mapping(Profile profile)
         {
             profile.CreateMap<CreateCommand, UserRole>()
                 .ForMember(x => x.Id, option => option.Ignore());
