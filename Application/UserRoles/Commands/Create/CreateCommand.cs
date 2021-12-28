@@ -13,12 +13,12 @@ namespace Application.UserRoles.Commands.Create
     {
         public CreateCommand()
         {
-            AllowedUiComponents = new List<UiComponent>();
+            UiComponents = new List<UiComponent>();
         }
 
         public string Name { get; set; }
 
-        public IList<UiComponent> AllowedUiComponents { get; set; }
+        public IList<UiComponent> UiComponents { get; set; }
 
 
         public bool NeedValidation { get; set; } = true;

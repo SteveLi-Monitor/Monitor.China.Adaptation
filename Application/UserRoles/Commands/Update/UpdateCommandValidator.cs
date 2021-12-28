@@ -24,7 +24,7 @@ namespace Application.UserRoles.Commands.Update
                     .ToMessage();
                 });
 
-            RuleForEach(x => x.AllowedUiComponents).SetValidator(new UiComponentValidator());
+            RuleForEach(x => x.UiComponents).SetValidator(new UiComponentValidator());
         }
     }
 }

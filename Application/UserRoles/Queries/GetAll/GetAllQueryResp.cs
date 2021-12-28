@@ -14,7 +14,7 @@ namespace Application.UserRoles.Queries.GetAll
 
             public string Name { get; set; }
 
-            public IList<UiComponent> AllowedUiComponents { get; set; }
+            public IList<UiComponent> UiComponents { get; set; }
         }
     }
 }
