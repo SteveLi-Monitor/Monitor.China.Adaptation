@@ -6,13 +6,13 @@ namespace Application.Entities
     {
         public UserRole()
         {
-            AllowedUiComponents = new List<UiComponent>();
+            UiComponents = new List<UiComponent>();
         }
 
         public int Id { get; set; }
 
         public string Name { get; set; }
 
-        public IList<UiComponent> AllowedUiComponents { get; set; }
+        public IList<UiComponent> UiComponents { get; set; }
     }
 }

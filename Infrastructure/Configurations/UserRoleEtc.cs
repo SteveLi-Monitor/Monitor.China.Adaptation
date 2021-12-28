@@ -11,7 +11,7 @@ namespace Infrastructure.Configurations
         public void Configure(EntityTypeBuilder<UserRole> builder)
         {
             builder.Property(x => x.Name).IsRequired();
-            builder.Property(x => x.AllowedUiComponents).HasJsonConversion();
+            builder.Property(x => x.UiComponents).HasJsonConversion();
 
             builder.HasIndex(x => x.Name).IsUnique();
 
@@ -20,13 +20,14 @@ namespace Infrastructure.Configurations
                 {
                     Id = 1,
                     Name = "Admin",
-                    AllowedUiComponents = new List<UiComponent>
+                    UiComponents = new List<UiComponent>
                     {
                         new UiComponent
                         {
                             Section = "Procedures",
                             Module = "Settings",
-                            Page = "UserRole"
+                            Page = "UserRoles",
+                            IsAuthorized = true,
                         },
                     },
                 });

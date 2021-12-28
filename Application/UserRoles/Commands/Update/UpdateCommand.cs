@@ -11,12 +11,12 @@ namespace Application.UserRoles.Commands.Update
     {
         public UpdateCommand()
         {
-            AllowedUiComponents = new List<UiComponent>();
+            UiComponents = new List<UiComponent>();
         }
 
         public int Id { get; set; }
 
-        public IList<UiComponent> AllowedUiComponents { get; set; }
+        public IList<UiComponent> UiComponents { get; set; }
 
 
         public bool NeedValidation { get; set; } = true;
@@ -34,7 +34,7 @@ namespace Application.UserRoles.Commands.Update
         public async Task<Unit> Handle(UpdateCommand request, CancellationToken cancellationToken)
         {
             var userRole = await dbContext.UserRoles.FindAsync(request.Id);
-            userRole.AllowedUiComponents = request.AllowedUiComponents;
+            userRole.UiComponents = request.UiComponents;
 
             await dbContext.SaveChangesAsync();
             return Unit.Value;
