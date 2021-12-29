@@ -32,7 +32,7 @@ namespace Application.MonitorApis
                 .GetSection(nameof(ApplicationSetting)).Get<ApplicationSetting>();
 
             httpClient.BaseAddress = new Uri(monitorApiServiceSetting.ServiceAddress);
-            httpClient.Timeout = TimeSpan.FromSeconds(5);
+            httpClient.Timeout = TimeSpan.FromSeconds(monitorApiServiceSetting.Timeout);
 
             HttpClient = httpClient;
             this.applicationUser = applicationUser;
