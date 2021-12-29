@@ -6,6 +6,8 @@ namespace Application.MonitorApis
     {
         public string ServiceAddress { get; set; }
 
+        public int Timeout { get; set; } = 5;
+
         public void Guard()
         {
             try
@@ -15,6 +17,14 @@ namespace Application.MonitorApis
             catch (Exception e)
             {
                 throw new ArgumentException($"Invalid {nameof(ServiceAddress)}: {ServiceAddress}.", e);
+            }
+
+            if (Timeout <= 0)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(Timeout),
+                    Timeout,
+                    $"{nameof(Timeout)} must be greater than 0");
             }
         }
     }
