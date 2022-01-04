@@ -59,7 +59,7 @@ namespace Application.MonitorApis
 
         private const string applicationUsersUrl = "api/Common/ApplicationUsers";
 
-        public async Task<ApplicationUsersDto.QueryApplicationUsersResp> QueryWebClientUsers()
+        public async Task<ApplicationUsersDto.QueryApplicationUsersResp> QueryApplicationUsers()
         {
             using var request = CreateRequest(
                 HttpMethod.Post,

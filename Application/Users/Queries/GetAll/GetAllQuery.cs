@@ -23,7 +23,7 @@ namespace Application.Users.Queries.GetAll
 
         public async Task<GetAllQueryResp> Handle(GetAllQuery request, CancellationToken cancellationToken)
         {
-            var resp = await monitorApiService.QueryWebClientUsers();
+            var resp = await monitorApiService.QueryApplicationUsers();
 
             return new GetAllQueryResp
             {
