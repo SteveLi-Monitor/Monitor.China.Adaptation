@@ -55,6 +55,29 @@ namespace Application.MonitorApis
             return await response.Content.ReadFromJsonAsync<LoginDto.LoginResp>();
         }
 
+        #region ApplicationUsersController
+
+        private const string applicationUsersUrl = "/Common/ApplicationUsers";
+
+        public async Task<ApplicationUsersDto.QueryWebClientUsersResp> QueryWebClientUsers()
+        {
+            using var request = CreateRequest(
+                HttpMethod.Post,
+                $"{applicationUsersUrl}/QueryWebClientUsers");
+            request.Content = JsonContent.Create(
+                new ApplicationUsersDto.QueryWebClientUsersReq
+                {
+                    Identifier = applicationSetting.ExtraFieldIdentifiers.PersonApiUserName
+                });
+
+            using var response = await HttpClient.SendAsync(request);
+            await EnsureSuccessResponse(response);
+
+            return await response.Content.ReadFromJsonAsync<ApplicationUsersDto.QueryWebClientUsersResp>();
+        }
+
+        #endregion
+
         #region AutoCompletesController
 
         private const string autoCompletesUrl = "/api/AutoCompletes";
