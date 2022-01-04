@@ -41,6 +41,7 @@ namespace Api
                         Version = "v1",
                         Title = "Monitor China API",
                     });
+                    options.CustomSchemaIds(x => x.FullName);
                     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                     {
                         Name = "Authorization",
