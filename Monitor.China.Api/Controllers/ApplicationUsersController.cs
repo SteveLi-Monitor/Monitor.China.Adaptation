@@ -18,8 +18,8 @@ namespace Monitor.China.Api.Controllers
             dbConnection = saDbConnection.DbConnection;
         }
 
-        [HttpPost("QueryWebClientUsers")]
-        public async Task<ActionResult<QueryWebClientUsersResp>> QueryWebClientUsers(QueryWebClientUsersReq request)
+        [HttpPost("QueryApplicationUsers")]
+        public async Task<ActionResult<QueryApplicationUsersResp>> QueryApplicationUsers(QueryApplicationUsersReq request)
         {
             request.Guard();
 
@@ -35,9 +35,9 @@ from
 ";
 
             return Ok(
-                new QueryWebClientUsersResp
+                new QueryApplicationUsersResp
                 {
-                    Users = await dbConnection.QueryAsync<QueryWebClientUsersResp.WebClientUser>(sql, request),
+                    Users = await dbConnection.QueryAsync<QueryApplicationUsersResp.ApplicationUser>(sql, request),
                 });
         }
     }

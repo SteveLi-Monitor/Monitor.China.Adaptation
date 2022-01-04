@@ -14,8 +14,7 @@ namespace Api.Controllers
         [HttpGet]
         public async Task<ActionResult<GetAllQueryResp>> Get()
         {
-            //return Ok(await Mediator.Send(new GetAllQuery()));
-            return Ok(new GetAllQueryResp());
+            return Ok(await Mediator.Send(new GetAllQuery()));
         }
 
         [AllowAnonymous]

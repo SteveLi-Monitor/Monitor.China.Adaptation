@@ -5,7 +5,7 @@ namespace Domain.Dtos
 {
     public class ApplicationUsersDto
     {
-        public class QueryWebClientUsersReq
+        public class QueryApplicationUsersReq
         {
             public string Identifier { get; set; }
 
@@ -15,11 +15,11 @@ namespace Domain.Dtos
             }
         }
 
-        public class QueryWebClientUsersResp
+        public class QueryApplicationUsersResp
         {
-            public IEnumerable<WebClientUser> Users { get; set; }
+            public IEnumerable<ApplicationUser> Users { get; set; }
 
-            public class WebClientUser
+            public class ApplicationUser
             {
                 public string ApplicationUserId { get; set; }
 

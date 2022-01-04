@@ -57,15 +57,15 @@ namespace Application.MonitorApis
 
         #region ApplicationUsersController
 
-        private const string applicationUsersUrl = "/Common/ApplicationUsers";
+        private const string applicationUsersUrl = "api/Common/ApplicationUsers";
 
-        public async Task<ApplicationUsersDto.QueryWebClientUsersResp> QueryWebClientUsers()
+        public async Task<ApplicationUsersDto.QueryApplicationUsersResp> QueryWebClientUsers()
         {
             using var request = CreateRequest(
                 HttpMethod.Post,
-                $"{applicationUsersUrl}/QueryWebClientUsers");
+                $"{applicationUsersUrl}/QueryApplicationUsers");
             request.Content = JsonContent.Create(
-                new ApplicationUsersDto.QueryWebClientUsersReq
+                new ApplicationUsersDto.QueryApplicationUsersReq
                 {
                     Identifier = applicationSetting.ExtraFieldIdentifiers.PersonApiUserName
                 });
@@ -73,7 +73,7 @@ namespace Application.MonitorApis
             using var response = await HttpClient.SendAsync(request);
             await EnsureSuccessResponse(response);
 
-            return await response.Content.ReadFromJsonAsync<ApplicationUsersDto.QueryWebClientUsersResp>();
+            return await response.Content.ReadFromJsonAsync<ApplicationUsersDto.QueryApplicationUsersResp>();
         }
 
         #endregion
