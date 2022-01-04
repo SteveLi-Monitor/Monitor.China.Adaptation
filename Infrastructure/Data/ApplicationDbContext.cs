@@ -1,4 +1,5 @@
-﻿using Application.Common.Interfaces;
+﻿using Application.Common;
+using Application.Common.Interfaces;
 using Application.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
@@ -11,6 +12,8 @@ namespace Infrastructure.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
+
+        public DbSet<ApplicationUser> ApplicationUsers { get; }
 
         public DbSet<UserRole> UserRoles { get; set; }
 
