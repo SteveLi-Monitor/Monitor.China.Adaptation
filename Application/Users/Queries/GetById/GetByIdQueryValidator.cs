@@ -1,14 +1,15 @@
 ﻿using Application.Common;
 using Application.Common.ErrorMessages;
-using Application.MonitorApis;
+using Application.Users.Queries.GetAll;
 using FluentValidation;
+using MediatR;
 using System.Linq;
 
 namespace Application.Users.Queries.GetById
 {
     public class GetByIdQueryValidator : AbstractValidator<GetByIdQuery>
     {
-        public GetByIdQueryValidator(MonitorApiService monitorApiService)
+        public GetByIdQueryValidator(ISender mediator)
         {
             CascadeMode = CascadeMode.Stop;
 
@@ -16,8 +17,8 @@ namespace Application.Users.Queries.GetById
             RuleFor(x => x.Id).MustAsync(
                 async (id, ct) =>
                 {
-                    var resp = await monitorApiService.QueryApplicationUsers();
-                    return resp.Users.Any(x => x.ApplicationUserId == id);
+                    var resp = await mediator.Send(new GetAllQuery());
+                    return resp.Users.Any(x => x.Id == id);
                 })
                 .WithMessage(x =>
                 {

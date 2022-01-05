@@ -2,9 +2,10 @@
 using Application.Common.ErrorMessages;
 using Application.Common.Interfaces;
 using Application.Entities;
-using Application.MonitorApis;
 using Application.UiComponents;
+using Application.Users.Queries.GetAll;
 using FluentValidation;
+using MediatR;
 using System.Linq;
 
 namespace Application.Users.Commands.UpdateUserRoleAndUiComponents
@@ -13,7 +14,7 @@ namespace Application.Users.Commands.UpdateUserRoleAndUiComponents
     {
         public UpdateUserRoleAndUiComponentsCommandValidator(
             IApplicationDbContext dbContext,
-            MonitorApiService monitorApiService)
+            ISender mediator)
         {
             CascadeMode = CascadeMode.Stop;
 
@@ -21,8 +22,8 @@ namespace Application.Users.Commands.UpdateUserRoleAndUiComponents
             RuleFor(x => x.Id).MustAsync(
                 async (id, ct) =>
                 {
-                    var resp = await monitorApiService.QueryApplicationUsers();
-                    return resp.Users.Any(x => x.ApplicationUserId == id);
+                    var resp = await mediator.Send(new GetAllQuery());
+                    return resp.Users.Any(x => x.Id == id);
                 })
                 .WithMessage(x =>
                 {

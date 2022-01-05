@@ -1,5 +1,5 @@
 ﻿using Application.Common.Interfaces;
-using Application.MonitorApis;
+using Application.Users.Queries.GetAll;
 using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -19,17 +19,17 @@ namespace Application.Users.Queries.GetById
     public class GetByIdQueryHandler : IRequestHandler<GetByIdQuery, GetByIdQueryResp>
     {
         private readonly IApplicationDbContext dbContext;
-        private readonly MonitorApiService monitorApiService;
         private readonly IMapper mapper;
+        private readonly ISender mediator;
 
         public GetByIdQueryHandler(
             IApplicationDbContext dbContext,
-            MonitorApiService monitorApiService,
-            IMapper mapper)
+            IMapper mapper,
+            ISender mediator)
         {
             this.dbContext = dbContext;
-            this.monitorApiService = monitorApiService;
             this.mapper = mapper;
+            this.mediator = mediator;
         }
 
         public async Task<GetByIdQueryResp> Handle(GetByIdQuery request, CancellationToken cancellationToken)
@@ -40,15 +40,15 @@ namespace Application.Users.Queries.GetById
 
             if (applicationUser == null)
             {
-                var resp = await monitorApiService.QueryApplicationUsers();
-                var user = resp.Users.First(x => x.ApplicationUserId == request.Id);
+                var resp = await mediator.Send(new GetAllQuery());
+                var user = resp.Users.First(x => x.Id == request.Id);
 
                 return new GetByIdQueryResp
                 {
                     User = new GetByIdQueryResp.ApplicationUser
                     {
-                        Id = user.ApplicationUserId,
-                        Username = user.ApplicationUserUsername
+                        Id = user.Id,
+                        Username = user.Username
                     }
                 };
             }

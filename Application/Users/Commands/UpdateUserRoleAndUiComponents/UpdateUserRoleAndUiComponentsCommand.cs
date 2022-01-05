@@ -1,7 +1,7 @@
 ﻿using Application.Common;
 using Application.Common.Interfaces;
 using Application.Entities;
-using Application.MonitorApis;
+using Application.Users.Queries.GetAll;
 using MediatR;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,14 +30,14 @@ namespace Application.Users.Commands.UpdateUserRoleAndUiComponents
     public class UpdateUserRoleAndUiComponentsCommandHandler : IRequestHandler<UpdateUserRoleAndUiComponentsCommand>
     {
         private readonly IApplicationDbContext dbContext;
-        private readonly MonitorApiService monitorApiService;
+        private readonly ISender mediator;
 
         public UpdateUserRoleAndUiComponentsCommandHandler(
             IApplicationDbContext dbContext,
-            MonitorApiService monitorApiService)
+            ISender mediator)
         {
             this.dbContext = dbContext;
-            this.monitorApiService = monitorApiService;
+            this.mediator = mediator;
         }
 
         public async Task<Unit> Handle(UpdateUserRoleAndUiComponentsCommand request, CancellationToken cancellationToken)
@@ -46,14 +46,14 @@ namespace Application.Users.Commands.UpdateUserRoleAndUiComponents
 
             if (applicationUser == null)
             {
-                var resp = await monitorApiService.QueryApplicationUsers();
-                var user = resp.Users.First(x => x.ApplicationUserId == request.Id);
+                var resp = await mediator.Send(new GetAllQuery());
+                var user = resp.Users.First(x => x.Id == request.Id);
 
                 await dbContext.ApplicationUsers.AddAsync(
                     new ApplicationUser
                     {
-                        Id = user.ApplicationUserId,
-                        Username = user.ApplicationUserUsername,
+                        Id = user.Id,
+                        Username = user.Username,
                         UiComponents = request.UiComponents,
                         UserRoleId = request.UserRoleId,
                     });
