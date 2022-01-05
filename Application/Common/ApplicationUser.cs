@@ -26,7 +26,7 @@ namespace Application.Common
         public IList<ApplicationUser> ChildUsers { get; set; }
 
 
-        public int UserRoleId { get; set; }
+        public int? UserRoleId { get; set; }
 
         public UserRole UserRole { get; set; }
 
