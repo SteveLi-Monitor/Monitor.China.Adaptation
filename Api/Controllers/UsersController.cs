@@ -20,7 +20,7 @@ namespace Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<GetByIdQueryResp>> Get(string id)
+        public async Task<ActionResult<GetByIdQueryResp>> GetById(string id)
         {
             return Ok(await Mediator.Send(new GetByIdQuery { Id = id }));
         }
