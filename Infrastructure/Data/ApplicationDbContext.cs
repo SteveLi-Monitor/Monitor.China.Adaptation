@@ -13,7 +13,7 @@ namespace Infrastructure.Data
         {
         }
 
-        public DbSet<ApplicationUser> ApplicationUsers { get; }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
         public DbSet<UserRole> UserRoles { get; set; }
 

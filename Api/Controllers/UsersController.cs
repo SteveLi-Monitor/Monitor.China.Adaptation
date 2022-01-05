@@ -1,6 +1,7 @@
 ﻿using Application.Users.Commands.SignIn;
 using Application.Users.Commands.UpdateUserRoleAndUiComponents;
 using Application.Users.Queries.GetAll;
+using Application.Users.Queries.GetById;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -16,6 +17,12 @@ namespace Api.Controllers
         public async Task<ActionResult<GetAllQueryResp>> Get()
         {
             return Ok(await Mediator.Send(new GetAllQuery()));
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<GetByIdQueryResp>> Get(string id)
+        {
+            return Ok(await Mediator.Send(new GetByIdQuery { Id = id }));
         }
 
         [AllowAnonymous]

@@ -6,7 +6,7 @@ namespace Application.Common.Interfaces
 {
     public interface IApplicationDbContext
     {
-        DbSet<ApplicationUser> ApplicationUsers { get; }
+        DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
         DbSet<UserRole> UserRoles { get; set; }
 
