@@ -2,6 +2,7 @@
 using Application.Users.Commands.UpdateUserRoleAndUiComponents;
 using Application.Users.Queries.GetAll;
 using Application.Users.Queries.GetById;
+using Application.Users.Queries.GetUiComponentsById;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -23,6 +24,12 @@ namespace Api.Controllers
         public async Task<ActionResult<GetByIdQueryResp>> GetById(string id)
         {
             return Ok(await Mediator.Send(new GetByIdQuery { Id = id }));
+        }
+
+        [HttpGet("UiComponents/{id}")]
+        public async Task<ActionResult<GetUiComponentsByIdQueryResp>> GetUiComponentsById(string id)
+        {
+            return Ok(await Mediator.Send(new GetUiComponentsByIdQuery { Id = id }));
         }
 
         [AllowAnonymous]
